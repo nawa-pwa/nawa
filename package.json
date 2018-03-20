@@ -1,5 +1,5 @@
 {
-  "name": "webpwa",
+  "name": "@tencent/webpwa",
   "version": "0.1.5",
   "description": "resolve the problem of fetch.request path in service worker ",
   "main": "dist/webpwa.min.js",

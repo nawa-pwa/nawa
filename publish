@@ -1,0 +1,6 @@
+#!/bin/bash
+
+git add . && commit -m $1 && tnpm version patch && git push && tnpm publish
+
+
+
