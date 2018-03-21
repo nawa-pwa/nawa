@@ -6,8 +6,6 @@ import PWALib from '../src';
 
 const cacheDB = "now-content";
 
-
-
 let pwaControl = new PWALib({
   HTMLMatch: ['now.qq.com/qq/market/index.html'],
   debug:true,
