@@ -101,13 +101,11 @@ void cacheOnly(Regexp path, Object options);
  - path[Regexp]: 用来设置具体匹配的 pathname 路径名和文件资源。
  - options: 用来确定该次请求相关的匹配参数。
 
-
-缓存方法调用的参数为：
+options 里面具体可设置参数如下：
 
 ```
 Option {
     origin: String || RegExp, // default is location.href
-    debug: Boolean,
-    networkTimeoutSeconds: Number,
+    networkTimeoutSeconds: Number, // 通过线上请求时，最大等待时间
   }
 ```

@@ -114,3 +114,6 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 tnpm run release
 ```
 
+## 开发项目参考
+
+[pwa-qq](http://git.code.oa.com/ivweb/now-qq-pwa)
