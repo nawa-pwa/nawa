@@ -87,7 +87,7 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 
 ## api 文档
 
-
+[api docs](./tree/master/docs)
 
 
 
