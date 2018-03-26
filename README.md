@@ -35,26 +35,28 @@ npm install webpwa --save
 
 ## 上手使用
 
-WebPwa 可以记录路由和来源进行统计区分，使用之前可以先初始化模块：
+在完成项目的 `install` 之后，现在我们主要针对一个项目 `now.qq.com/qq/market/index.html` 来做接入。大致可以分为，初始化和缓存设置两步。该项目有个特点，就是可以实现全部离线的效果，并且在二次打开时会默认使用上一次更新的 HTML。
 
 ```
-import Webpwa from 'webpwa';
+import Webpwa from 'webpwa';
 
-# 设置基本缓存设置
+# 设置基本缓存表
 const cacheDB = "now-content";
 
-let pwaControl = new Webpwa({
+let pwaControl = new Webpwa({
   HTMLMatch: ['now.qq.com/qq/market/index.html'],
   cache: {
     name: cacheDB,
-    maxAgeSeconds: 60 * 60 * 24 * 2, // 2 days
-    maxEntries:150,
-    queryOptions: {
+    maxAgeSeconds: 60 * 60 * 24 * 2, // 设置最大缓存时间
+    maxEntries:150, // 设置最大缓存数量
+    queryOptions: { // 设置缓存忽略的匹配
       ignoreSearch: true
     }
   }
 });
 ```
+
+接着，我们就需要具体对某些 CDN 资源和 HTML 进行相关缓存路由设置。
 
 ### 缓存 CDN 域名资源
 
@@ -86,7 +88,10 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 ## api 文档
 
 
-## 注意
+
+
+
+## FAQ
 
 1. 如果是跨域资源，请求里面一定需要带上 cross-origin 的属性。例如：
 

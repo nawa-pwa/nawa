@@ -58,7 +58,49 @@ let pwaControl = new PWALib({
 
 ## 挂载方法
 
-基本挂载的
+基本挂载的方法主要有：
+
+```
+Constructor PWALib{
+    void cacheFirst(Regexp path, Object options);
+    void cacheFirstUpdate(Regexp path, Object options);
+    void cacheOnly(Regexp path, Object options);
+    void precache(Array urls);
+}
+```
+
+其中路由匹配方法里面参数很重要，第一个是用来接收的 pathname 的正则表达式，用来匹配请求的 pathname 部分。
+
+```
+# 只匹配 11.url.cn/now/qq 路径下的 js 和 css 资源文件
+# 比如：匹配 11.url.cn/now/qq/lib.js、1.url.cn/now/qq/lib.css 文件内容
+pwaControl.cacheFirst(/now\/qq\/.*\.(?:js|css|png|jpeg|jpg|webp).*/, {
+  origin: "11.url.cn",
+});
+
+```
+
+ - cacheFirst: 优先走缓存，并且检查当前缓存是否超过有效期限，默认值是 2 天，这里可以根据具体的文件来设置。常常针对的是 JS 等静态资源。
+ - cacheFirstUpdate: 优先走缓存，并且会在每次返回缓存之后，额外进行后台更新。常常用于 HTML 资源文件。
+ - cacheOnly: 只会走缓存，如果没有缓存，则会返回 undefined。该方法一般不常用。
+ - precache: 在 `install` 阶段，设置预先需要缓存的内容。
+
+
+### 参数说明
+
+#### 缓存方法参数
+
+在使用具体缓存策略时，具体的缓存参数都是一致的。
+
+```
+void cacheFirst(Regexp path, Object options);
+void cacheFirstUpdate(Regexp path, Object options);
+void cacheOnly(Regexp path, Object options);
+```
+
+ - path[Regexp]: 用来设置具体匹配的 pathname 路径名和文件资源。
+ - options: 用来确定该次请求相关的匹配参数。
+
 
 缓存方法调用的参数为：
 
