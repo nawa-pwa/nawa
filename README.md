@@ -116,6 +116,7 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
  - 首先创建你的 sw.js，比如，在 Now 中直接在 now-qq-pwa 项目里面自己新建一份 sw.js 文件
  - 创建完毕后，在主业务中，使用 [satarify](http://git.code.oa.com/jimmytian/satarify) 直接接入。具体目录划分可以直接参考 [h5-share](http://git.code.oa.com/avweb/now-h5-trunk/tree/master/src/pages/index) 项目。
 
+4. 在创建 sw.js 时，只能在和 xxx.html 同自路径，比如 now.qq.com/h5/qq/test.html 只能新建一份 ow.qq.com/h5/qq/sw.js 文件。 
 
 ## tnpm 发布
 
