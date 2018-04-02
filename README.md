@@ -111,6 +111,11 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 
 可以参考 [satarify](http://git.code.oa.com/jimmytian/satarify) 项目即可。
 
+3. 整个接入流程是什么呢？
+
+ - 首先创建你的 sw.js，比如，在 Now 中直接在 now-qq-pwa 项目里面自己新建一份 sw.js 文件
+ - 创建完毕后，在主业务中，使用 [satarify](http://git.code.oa.com/jimmytian/satarify) 直接接入。具体目录划分可以直接参考 [h5-share](http://git.code.oa.com/avweb/now-h5-trunk/tree/master/src/pages/index) 项目。
+
 
 ## tnpm 发布
 
