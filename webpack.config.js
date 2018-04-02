@@ -1,22 +1,17 @@
 const path = require('path');
+const Uglifyjs = require('uglifyjs-webpack-plugin');
 
 
 const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
+    devtool: 'cheap-module-eval-source-map',
     entry: {
-        'qq/sw': path.join(__dirname,'./src/qq/main/index'),
-        'activity/grand-ceremony/sw':path.join(__dirname,'./src/activity/grand-ceremony/main/index')
-    },
-    output: {
-        path: path.join(__dirname, './public/webserver/'),
-        filename: '[name].js'
+        'webpwa': path.join(__dirname,'./src/index'),
     },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[name].min.js',
-        libraryTarget:"umd",
-        library:"httplive",
+        filename: '[name].js',
     },
     module: {
         rules: [{
@@ -31,13 +26,20 @@ let config = {
                 }
             }]
         }]
-    }
+    },
+    plugins:[
+        new Uglifyjs({
+            uglifyOptions: {
+                compress: {
+                    pure_funcs: ['console.log']
+                },
+                warnings: false
+            }
+
+        }),
+    ]
 
 }
 
-if (!COMPILE) {
-    config.devtool = 'cheap-module-eval-source-map';
-    config.output.path = path.join(__dirname,'dist');
-}
 
 module.exports = config;
