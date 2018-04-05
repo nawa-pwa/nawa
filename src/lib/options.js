@@ -1,44 +1,49 @@
-/*
-	Copyright 2015 Google Inc. All Rights Reserved.
+import { stringToRegexp } from './helpers';
 
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+class Options {
+  constructor() {
+    this.origin = null
+    this.debug = false
+    this.timeout = 7
+    this.whiteList = []
+    this.preCacheItems = [] // precache resource
+    // indicate when new sw.js is meeting, immediately update A regular expression
+    // to apply to HTTP response codes. Codes that match will be considered
+    // successes, while others will not, and will not be cached.
+    this.forceUpdate = true
+    this.successResponses = /^0|([123]\d\d)|(40[14567])|410$/
+    this.captureSW = false
+    this.cache = {
+      name: "satarify",
+      maxAgeSeconds: 60 *2,
+      maxEntries: 150,
+      queryOptions: null
+    }
+  }
 
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
-*/
-'use strict';
+  set setCache(obj) {
+    this.cache = Object.assign({}, this.cache, obj);
+  }
+  /**
+   * @param [Array || String]
+   */
+  set setWhiteList(list){
+    if(list instanceof Array){
+      list = stringToRegexp(list);
+    }else if(typeof list === "string"){
+      list = [new RegExp(list,'i')];
+    }else{
+      throw new Error('whiteList should be Array or String');
+    }
 
-// TODO: This is necessary to handle different implementations in the wild
-// The spec defines self.registration, but it was not implemented in Chrome 40.
-var scope;
-if (self.registration) {
-  scope = self.registration.scope;
-} else {
-  scope = self.scope || new URL('./', self.location).href;
+    this.whiteList = list;
+
+    
+  }
+
 }
 
-module.exports = {
-  cache: {
-    name:"now-content",
-    maxAgeSeconds: 60*60*24*2,
-    maxEntries: 150,
-    queryOptions: null
-  },
-  origin:null,
-  debug: false,
-  networkTimeoutSeconds: 3000,
-  preCacheItems: [],
-  forceUpdate:true, // indicate when new sw.js is meeting, immediately update
-  // A regular expression to apply to HTTP response codes. Codes that match
-  // will be considered successes, while others will not, and will not be
-  // cached.
-  successResponses: /^0|([123]\d\d)|(40[14567])|410$/,
-  captureSW:false,
-};
+const test = new Options();
+
+export default test;

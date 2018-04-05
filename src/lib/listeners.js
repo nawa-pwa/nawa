@@ -15,9 +15,10 @@
 */
 'use strict';
 
+import options from './options';
+
 var helpers = require('./helpers');
 var router = require('./router');
-var options = require('./options');
 
 // Event listeners
 

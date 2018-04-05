@@ -8,6 +8,7 @@ let config = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         'webpwa': path.join(__dirname,'./src/index'),
+        'sw':path.join(__dirname,'./example/index')
     },
     output: {
         path: path.join(__dirname, 'dist'),

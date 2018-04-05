@@ -18,7 +18,7 @@
 // This is the entrypoint for the sw-toolbox bundle. All code with
 // side effects (e.g. adding event listeners) should be in this file.
 
-var options = require('./options');
+
 var router = require('./router');
 var helpers = require('./helpers');
 var strategies = require('./strategies');
@@ -26,11 +26,6 @@ var listeners = require('./listeners');
 
 helpers.debug('Service Worker Toolbox is loading');
 
-// Set up listeners.
-
-self.addEventListener('install', listeners.installListener);
-self.addEventListener('activate', listeners.activateListener);
-self.addEventListener('fetch', listeners.fetchListener);
 
 module.exports = {
   networkOnly: strategies.networkOnly,
@@ -40,7 +35,6 @@ module.exports = {
   fastest: strategies.fastest,
   cacheUpdate:strategies.cacheUpdate,
   router: router,
-  options: options,
   cache: helpers.cache,
   uncache: helpers.uncache,
   precache: helpers.precache

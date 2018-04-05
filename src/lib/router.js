@@ -1,8 +1,10 @@
 'use strict';
 
+import options from './options';
+
 var Route = require('./route');
 var helpers = require('./helpers');
-var options = require('./options');
+
 
 function regexEscape(s) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');

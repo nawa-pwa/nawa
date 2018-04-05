@@ -1,67 +1,85 @@
 import Toolbox from './lib/sw-toolbox';
-import { getDefaultWhiteList,stringToRegexp } from './lib/helpers';
-import { addOptions } from './lib/decorator/pwalib';
+import {getDefaultWhiteList, stringToRegexp} from './lib/helpers';
+import {addOptions} from './lib/decorator/pwalib';
+import listeners from './lib/listeners';
+import options from './lib/options';
 
+export default class PWALib {
+    static create(opts={}){
+        let {config,stragety} = opts;
 
-export default class PWALib{
-    constructor(param){
+        let pwa = new PWALib(config);
+
+    }
+    constructor(param) {
+
         this._param = Object.assign({
-            timeout:3,
-            debug:false,
+            timeout: 3,
+            debug: false,
             forceUpdate: true,
-            HTMLMatch: getDefaultWhiteList(self.location.origin,self.location.pathname),
-            maxEntries:100,
-            options:{},
-            captureSW:false,
-        },param);
+            whiteList: getDefaultWhiteList(self.location.origin,self.location.pathname),
+            captureSW: false,
+            cache:{},
+            preCacheItems:[],
+        }, param);
 
-        this._contentLib = "now-content";
 
-        Toolbox.options.debug = this._param.debug;
-        Toolbox.options.networkTimeoutSeconds = this._param.timeout;
-        Toolbox.options.whiteList = stringToRegexp(this._param.HTMLMatch);
-        Toolbox.options.forceUpdate = this._param.forceUpdate;
-        Toolbox.options.captureSW = this._param.captureSW;
+        options.debug = this._param.debug;
+        options.timeout = this._param.timeout;
+        options.setWhiteList = this._param.whiteList;
+        options.forceUpdate = this._param.forceUpdate;
+        options.captureSW = this._param.captureSW;
+        options.setCache = this._param.cache;
+        options.preCacheItems = this._param.preCacheItems;
 
+
+        // Set up listeners.
+        self.addEventListener('install', listeners.installListener);
+        self.addEventListener('activate', listeners.activateListener);
+        self.addEventListener('fetch', listeners.fetchListener);
 
     }
     /**
      * @desc using decorator to add the default options param.
      *      if there is cache, then using cache. otherwise, get and update.
      *      feature:
-     *          1. always keep the cache fresh. when get the cache, 
+     *          1. always keep the cache fresh. when get the cache,
      *              check the `date` header whether the difftime range is in maxAgeSeconds property
-     * 
+     *
      */
     @addOptions
-    cacheFirst(path,options){
-        Toolbox.router.get(path,Toolbox.cacheFirst,options);
+    cacheFirst(path, options) {
+        Toolbox
+            .router
+            .get(path, Toolbox.cacheFirst, options);
     }
 
     /**
-     * @desc the common features are similar to the above. 
+     * @desc the common features are similar to the above.
      *       the more process is when the cache is successfully return and update.
-     *       likely, it's often  used to cache HTML 
-     * 
+     *       likely, it's often  used to cache HTML
+     *
      * @param {regexp || string} path : get the Path route
-     * @param {*} options 
+     * @param {*} options
      */
     @addOptions
-    cacheFirstUpdate(path,options){
-        Toolbox.router.get(path,Toolbox.cacheUpdate,options);
+    cacheFirstUpdate(path, options) {
+        Toolbox
+            .router
+            .get(path, Toolbox.cacheUpdate, options);
     }
     @addOptions
-    cacheOnly(path,options){
-        Toolbox.router.get(path,Toolbox.cacheOnly,options);
+    cacheOnly(path, options) {
+        Toolbox
+            .router
+            .get(path, Toolbox.cacheOnly, options);
     }
 
-
-    precache(urls){
+    precache(urls) {
         Toolbox.precache(urls);
     }
-    get router(){
+    get router() {
         return Toolbox.router;
     }
-
 
 }

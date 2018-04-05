@@ -25,8 +25,8 @@ function networkFirst(request, values, options) {
       globalOptions.successResponses;
   // This will bypass options.networkTimeout if it's set to a false-y value like
   // 0, but that's the sane thing to do anyway.
-  var networkTimeoutSeconds = options.networkTimeoutSeconds ||
-      globalOptions.networkTimeoutSeconds;
+  var timeout = options.timeout ||
+      globalOptions.timeout;
   helpers.debug('Strategy: network first [' + request.url + ']', options);
 
   return helpers.openCache(options).then(function(cache) {
@@ -34,7 +34,7 @@ function networkFirst(request, values, options) {
     var promises = [];
     var originalResponse;
 
-    if (networkTimeoutSeconds) {
+    if (timeout) {
       var cacheWhenTimedOutPromise = new Promise(function(resolve) {
         timeoutId = setTimeout(function() {
           cache.match(request, cacheQueryOptions).then(function(response) {
@@ -48,7 +48,7 @@ function networkFirst(request, values, options) {
               resolve(response);
             }
           });
-        }, networkTimeoutSeconds * 1000);
+        }, timeout * 1000);
       });
       promises.push(cacheWhenTimedOutPromise);
     }

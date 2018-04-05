@@ -1,6 +1,7 @@
 'use strict';
 
-var globalOptions = require('./options');
+import globalOptions from './options';
+
 var idbCacheExpiration = require('./idb-cache-expiration');
 
 function debug(message, options) {
@@ -196,6 +197,7 @@ function checkReq(request){
   } = request;
 
   if(referrer){
+    
     if(inWhiteList(globalOptions.whiteList,referrer) && corsCheck(mode,url)){
       return true;
     }
@@ -258,7 +260,7 @@ function getDefaultWhiteList(origin,pathname){
  * 
  * @param {Array} lists convert string_value to Regexp
  */
-function stringToRegexp(lists){
+export function stringToRegexp(lists){
   return lists.map(list=>{
     if(!(list instanceof RegExp)){
        list = new RegExp(list,'i');
@@ -292,3 +294,4 @@ module.exports = {
   isHTML,
   checkReq,
 };
+
