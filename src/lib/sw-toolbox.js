@@ -19,15 +19,16 @@
 // side effects (e.g. adding event listeners) should be in this file.
 
 
-var router = require('./router');
-var helpers = require('./helpers');
-var strategies = require('./strategies');
-var listeners = require('./listeners');
+
+import router  from './router';
+import helpers  from './helpers';
+import strategies  from './strategies';
+import listeners  from './listeners';
 
 helpers.debug('Service Worker Toolbox is loading');
 
 
-module.exports = {
+export default {
   networkOnly: strategies.networkOnly,
   networkFirst: strategies.networkFirst,
   cacheOnly: strategies.cacheOnly,

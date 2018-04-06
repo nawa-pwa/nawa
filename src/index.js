@@ -10,6 +10,25 @@ export default class PWALib {
 
         let pwa = new PWALib(config);
 
+        Object.keys(stragety).forEach(key=>{
+            stragety[key].forEach(cacheObj=>{
+                
+                if(cacheObj.path instanceof Array){
+                    // set path
+                    cacheObj.path.forEach(pathKey=>{
+                        pwa[key](cacheObj.pathKey,{
+                            origin: cacheObj.origin
+                        })
+                    })
+                }else if(cacheObj.path instanceof RegExp){
+                    pwa[key](cacheObj.path,{
+                        origin: cacheObj.origin
+                    })
+                }
+
+            })
+        });
+
     }
     constructor(param) {
 
@@ -32,7 +51,7 @@ export default class PWALib {
         options.setCache = this._param.cache;
         options.preCacheItems = this._param.preCacheItems;
 
-
+        
         // Set up listeners.
         self.addEventListener('install', listeners.installListener);
         self.addEventListener('activate', listeners.activateListener);

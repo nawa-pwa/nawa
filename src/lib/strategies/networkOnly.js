@@ -14,7 +14,7 @@
 	limitations under the License.
 */
 'use strict';
-var helpers = require('../helpers');
+import helpers from '../helpers';
 
 function networkOnly(request, values, options) {
   helpers.debug('Strategy: network only [' + request.url + ']', options);

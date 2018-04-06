@@ -27,5 +27,15 @@ export default {
             }
         ]
     }
-
 }
+
+
+/**
+ * @param {Object} stragety:
+ *      key: stragety,
+ *      value: Array || Object
+ *    @key {cacheFirst || cacheFirstUpdate || cacheOnly}
+ *    @value {Array}
+ *          @Object 
+ *  
+ */

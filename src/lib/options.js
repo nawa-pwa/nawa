@@ -44,6 +44,5 @@ class Options {
 
 }
 
-const test = new Options();
 
-export default test;
+export default new Options;

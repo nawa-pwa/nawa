@@ -13,11 +13,21 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 */
-module.exports = {
-  networkOnly: require('./networkOnly'),
-  networkFirst: require('./networkFirst'),
-  cacheOnly: require('./cacheOnly'),
-  cacheFirst: require('./cacheFirst'),
-  fastest: require('./fastest'),
-  cacheUpdate:require('./cacheUpdate'),
+
+import networkOnly  from './networkOnly'
+import networkFirst  from './networkFirst'
+import cacheOnly  from './cacheOnly'
+import cacheFirst  from './cacheFirst'
+import fastest  from './fastest'
+import cacheUpdate from './cacheUpdate'
+
+
+
+export default {
+	networkOnly,
+	networkFirst,
+	cacheOnly,
+	cacheFirst,
+	fastest,
+	cacheUpdate,
 };

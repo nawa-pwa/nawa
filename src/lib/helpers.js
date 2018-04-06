@@ -7,6 +7,7 @@ var idbCacheExpiration = require('./idb-cache-expiration');
 function debug(message, options) {
   options = options || {};
   var flag = options.debug || globalOptions.debug;
+  
   if (flag) {
     console.log('[sw-toolbox] ' + message);
   }

@@ -14,8 +14,9 @@
   limitations under the License.
 */
 'use strict';
-var helpers = require('../helpers');
-var cacheOnly = require('./cacheOnly');
+
+import helpers from '../helpers';
+import cacheOnly from './cacheOnly';
 
 function fastest(request, values, options) {
   helpers.debug('Strategy: fastest [' + request.url + ']', options);

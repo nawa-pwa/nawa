@@ -14,8 +14,8 @@
 	limitations under the License.
 */
 'use strict';
-var globalOptions = require('../options');
-var helpers = require('../helpers');
+import globalOptions from '../options';
+import helpers from '../helpers';
 
 function cacheOnly(request, values, options) {
   options = options || {};
