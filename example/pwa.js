@@ -1,18 +1,18 @@
 export default {
     config:{
-        "cache": {
-            "name": "now-content",
-            "maxAgeSeconds": 172800,
-            "maxEntries": 150,
-            "queryOptions": {
-                "ignoreSearch": true
+        cache: {
+            name: now-content,
+            maxAgeSeconds: 172800,
+            maxEntries: 150,
+            queryOptions: {
+                ignoreSearch: true
             }
         }
     },
-    "stragety":{
-        "cacheFirst":[{
-            "origin":"11.url.cn",
-            "path":[
+    stragety:{
+        cacheFirst:[{
+            origin:"11.url.cn",
+            path:[
                 /now\/lib\/.*\.(?:js|css).*/,
                 /now\/qq\/.*\.(?:js|css|png|jpeg|jpg|webp).*/
             ]
@@ -20,6 +20,7 @@ export default {
             origin:"open.mobile.qq.com",
             path:/sdk\/.*\.(?:js).*/
         }],
+        // cache HTML
         cacheFirstUpdate:[
             {
                 origin:"now.qq.com",

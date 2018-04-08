@@ -87,10 +87,54 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 
 完整接入文件，可以直接参考：[example docs](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
 
+### 直接使用配置文件
+
+如果觉得上面写法比较麻烦，可以直接使用一份配置文档来实现 PWA 的上手配置。这里我们以常用 Now 业务来实现 PWA 的接入。
+
+我们简单分析一下缓存策略，对文件进行分类：
+
+ - cacheFirst: 使用 cacheFirst 策略进行匹配。JS/CSS 资源根据 hash 来进行匹配，验证其是否过期，对应的资源为：
+
+```
+cacheFirst:[{
+            origin:"11.url.cn",
+            path:[
+                /now\/lib\/.*\.(?:js|css).*/,
+                /now\/qq\/.*\.(?:js|css|png|jpeg|jpg|webp).*/
+            ]
+        },{
+            origin:"open.mobile.qq.com",
+            path:/sdk\/.*\.(?:js).*/
+        }]
+```
+ - cacheFirstUpdate: 使用 cacheFirstUpdate 策略处理某些更新敏感的文件。它会首先返回缓存，然后再内部进行更新。常常处理 HTML 资源：
+
+```
+cacheFirstUpdate:[
+            {
+                origin:"now.qq.com",
+                path:/.*\.(?:html).*/
+            }
+        ]
+```
+ 
+然后加上默认的 `config` 配置即可。整个文件可以直接参考 [pwaconfig.js](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
+
+最后使用 pwa 接入即可：
+
+```
+import PWALib from '../src';
+import config from './pwa'; // load the profile
+
+
+PWALib.create(config);
+```
+
 
 ### 业务端接入
 
 上面只是简述了一下，如何在 sw.js 中接入 PWA，但是，接入 PWA 还需要在主业务用耦合一小段代码，这里同样提供了一个方便的接入脚本。项目可以直接参考：[satarify](http://git.code.oa.com/jimmytian/satarify)
+
 
 
 ## api 文档
