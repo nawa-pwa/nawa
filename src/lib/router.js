@@ -5,149 +5,140 @@ import options from './options';
 var Route = require('./route');
 var helpers = require('./helpers');
 
-
-function regexEscape(s) {
-  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-
 /**
- * @desc the method will be used in two way:
- *        1. check the origin whether request.origin is in specific origins
- *        2. check the pathname whether it is matched by option.path
- * 
- * @param {Set} map 
- * @param {url} string 
+ * the routes is a map:
+ *    @key: key is origin
+ *    @value: value is also a Map
+ *        @key {String} get|post|put|delete
+ *        @value {Map}
+ *          @key {Regexp.source} pathname
+ *          @value {Route}
+ *
  */
-var keyMatch = function (map, string) {
-  // This would be better written as a for..of loop, but that would break the
-  // minifyify process in the build.
-  var entriesIterator = map.entries();
-  var item = entriesIterator.next();
-  var matches = [];
+class Router {
+  constructor() {
+    this.routes = new Map();
 
-  while (!item.done) {
-    var pattern = new RegExp(item.value[0]);
+    this
+      .routes
+      .set(RegExp, new Map());
+    this.default = null;
 
-    if (pattern.test(string)) {
-      // item.value(1) is map type. {method, Contructor Route}, like: {get: Route{regexp,method}}
-      matches.push(item.value[1]);
-    }
-    item = entriesIterator.next();
   }
-  return matches;
-};
-
-var Router = function () {
-  this.routes = new Map(); // is a map
-  // Create the dummy origin for RegExp-based routes
-  this.routes.set(RegExp, new Map());
-  this.default = null;
-};
-
-['get', 'post', 'put', 'delete', 'head', 'any'].forEach(function (method) {
-  Router.prototype[method] = function (path, handler, options) {
-    return this.add(method, path, handler, options);
-  };
-});
-
-Router.prototype.add = function (method, path, handler, options) {
-  options = options || {};
-
-  // the origin should be string or regexp
-  var origin = options.origin || self.location.origin;
-  if (origin instanceof RegExp) {
-    origin = origin.source;
-  } else {
-    origin = regexEscape(origin);
+  bindMethod() {
+    [
+      'get',
+      'post',
+      'put',
+      'delete',
+      'head',
+      'any'
+    ].forEach(method => {
+      this[method] = (path, handler, options) => {
+        return this.add(method, path, handler, options);
+      }
+    })
   }
-
-  method = method.toLowerCase();
-
-  var route = new Route(method, path, handler, options);
-
-  if (!this.routes.has(origin)) {
-    this.routes.set(origin, new Map());
-  }
-
-  var methodMap = this.routes.get(origin);
-  if (!methodMap.has(method)) {
-    methodMap.set(method, new Map());
-  }
-
-  var routeMap = methodMap.get(method);
-  var regExp = route.regexp || route.fullUrlRegExp;
-
-  if (routeMap.has(regExp.source)) {
-    helpers.debug('"' + path + '" resolves to same regex as existing route.');
-  }
-
-  routeMap.set(regExp.source, route);
-
-};
-
-/**
- * 
- * @param {String} method get|post|put
- * @param {String} url the whole url
- */
-Router.prototype.matchMethod = function (method, url) {
-  var urlObject = new URL(url);
-  var origin = urlObject.origin;
-  var path = urlObject.pathname;
-  // We want to first check to see if there's a match against any
-  // "Express-style" routes (string for the path, RegExp for the origin).
-  // Checking for Express-style matches first maintains the legacy behavior.
-  // If there's no match, we next check for a match against any RegExp routes,
-  // where the RegExp in question matches the full URL (both origin and path).
-
   /**
-   * first keyMatch is to determine that request.origin is matched in origins 
+   * bind requesting method, like get post
+   * @param {String} method get | post
+   * @param {String} path
+   * @param {Event} handler
+   * @param {Object} options
    */
-  return this._match(method, keyMatch(this.routes, origin), path);
-};
+  add(method, path, handler, options) {
+    options = options || {};
 
-Router.prototype._match = function (method, methodMaps, pathname) {
-  if (methodMaps.length === 0) {
-    // the origin is not allowed
-    return null;
+    // the origin should be string or regexp
+    var origin = options.origin || self.location.origin;
+    if (origin instanceof RegExp) {
+      origin = origin.source;
+    } else {
+      origin = helpers.regexEscape(origin);
+    }
+
+    method = method.toLowerCase();
+
+    // init Route, treat this as a key
+    var route = new Route(method, path, handler, options);
+
+    if (!this.routes.has(origin)) {
+      // add origin
+      this
+        .routes
+        .set(origin, new Map());
+    }
+
+    // get the route of this origin
+    var methodMap = this
+      .routes
+      .get(origin);
+
+    if (!methodMap.has(method)) {
+      methodMap.set(method, new Map());
+    }
+
+    var routeMap = methodMap.get(method);
+    var regExp = route.regexp || route.fullUrlRegExp;
+
+    if (routeMap.has(regExp.source)) {
+      helpers.debug('"' + path + '" resolves to same regex as existing route.');
+    }
+
+    routeMap.set(regExp.source, route);
+
   }
+  /**
+   * Entry
+   * get the handle of specific route, like cacheFirst
+   * @param {Request} request fetch_request
+   */
+  match(request) {
+    // you can add the refer and crossorigin determination
+    let {referrer, mode, url} = request;
 
+    if (!helpers.checkReq(request)) {
+      return null;
+    }
 
-  for (var i = 0; i < methodMaps.length; i++) {
-    var methodMap = methodMaps[i]; // get all method's Route specific to this origin
+    return this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
+  }
+  /**
+   *
+   * @param {String} method get|post|...
+   * @param {Map} methodMaps matched method with route Obj
+   * @param {String} pathname pathname of url, like app/test
+   */
+  _match(method, methodMaps, pathname) {
+    if (methodMaps.length === 0) {
+      // the origin is not allowed
+      return null;
+    }
 
-    var routeMap = methodMap && methodMap.get(method.toLowerCase());
+    for (var i = 0; i < methodMaps.length; i++) {
+      var methodMap = methodMaps[i]; // get all method's Route specific to this origin
 
-    if (routeMap) {
-      var routes = keyMatch(routeMap, pathname); // match the pathname using param.path
+      var routeMap = methodMap && methodMap.get(method.toLowerCase());
 
-      if (routes.length > 0) {
-        return routes[0].makeHandler(pathname);
+      if (routeMap) {
+        var routes = helpers.keyMatch(routeMap, pathname); // match the pathname using param.path
+
+        if (routes.length > 0) {
+          return routes[0].makeHandler(pathname);
+        }
       }
     }
-  }
 
-  return null;
-};
-
-Router.prototype.match = function (request) {
-  // you can add the refer and crossorigin determination
-  let {
-    referrer,
-    mode,
-    url,
-  } = request;
-
-
-  if(!helpers.checkReq(request)){
     return null;
   }
+  matchMethod(method, url) {
+    var urlObject = new URL(url);
+    var origin = urlObject.origin;
+    var path = urlObject.pathname;
 
+    return this._match(method, helpers.keyMatch(this.routes, origin), path);
+  }
 
+}
 
-  return this.matchMethod(request.method, request.url) ||
-    this.matchMethod('any', request.url);
-};
-
-module.exports = new Router();
+export default new Router;

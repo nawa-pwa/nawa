@@ -276,6 +276,37 @@ function isHTML(url,mode){
 }
 
 
+/**
+ * @desc the method will be used in two way:
+ *        1. check the origin whether request.origin is in specific origins
+ *        2. check the pathname whether it is matched by option.path
+ *
+ * @param {Set} map
+ * @param {url} string
+ */
+function keyMatch(map, string) {
+  // This would be better written as a for..of loop, but that would break the
+  // minifyify process in the build.
+  var entriesIterator = map.entries();
+  var item = entriesIterator.next();
+  var matches = [];
+
+  while (!item.done) {
+    var pattern = new RegExp(item.value[0]);
+
+    if (pattern.test(string)) {
+      // item.value(1) is map type. {method, Contructor Route}, like: {get:
+      // Route{regexp,method}}
+      matches.push(item.value[1]);
+    }
+    item = entriesIterator.next();
+  }
+  return matches;
+};
+
+function regexEscape(s) {
+  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+}
 
 
 module.exports = {
@@ -294,5 +325,7 @@ module.exports = {
   stringToRegexp,
   isHTML,
   checkReq,
+  keyMatch,
+  regexEscape,
 };
 
