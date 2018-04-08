@@ -130,6 +130,29 @@ import config from './pwa'; // load the profile
 PWALib.create(config);
 ```
 
+### 中间件捕获
+
+这里针对 `fetch` 事件添加了中间件的功能。如果你想对请求做相关的额外处理的话，可以通过中间件的形式来完成。不过，该功能主要针对有特殊需求的用户使用。
+
+```
+pwaControl.use((request,next)=>{
+    let {
+        mode,
+        url,
+      } = request;
+    
+      // check that the requst is HTML or not
+    if(!(/^http.*\.html/.test(url) && mode==="navigate")){
+        // the request type is not HTML 
+        next();
+    }
+})
+```
+
+通过 `use` 方法传递一个函数，里面的参数为：
+
+ - request: event.request 请求对象
+ - next: 是否执行下一个中间件，如果不执行则会在当前中间件停止。
 
 ### 业务端接入
 
