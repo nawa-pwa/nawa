@@ -154,6 +154,7 @@ pwaControl.use((request,next)=>{
  - request: event.request 请求对象
  - next: 是否执行下一个中间件，如果不执行则会在当前中间件停止。
 
+更多可以直接参考 [api docs](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
 ### 业务端接入
 
 上面只是简述了一下，如何在 sw.js 中接入 PWA，但是，接入 PWA 还需要在主业务用耦合一小段代码，这里同样提供了一个方便的接入脚本。项目可以直接参考：[satarify](http://git.code.oa.com/jimmytian/satarify)
