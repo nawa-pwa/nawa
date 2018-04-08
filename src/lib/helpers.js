@@ -309,7 +309,7 @@ function regexEscape(s) {
 }
 
 
-module.exports = {
+export default {
   debug: debug,
   fetchAndCache: fetchAndCache,
   openCache: openCache,

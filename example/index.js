@@ -2,7 +2,7 @@
  * @noWrap
  */
 
-import PWALib from '.webpwa';
+import PWALib from '../src';
 import config from './pwa';
 
 

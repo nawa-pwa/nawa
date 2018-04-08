@@ -3,6 +3,7 @@ import {getDefaultWhiteList, stringToRegexp} from './lib/helpers';
 import {addOptions} from './lib/decorator/pwalib';
 import listeners from './lib/listeners';
 import options from './lib/options';
+import middleware from './lib/middleware/mdControler';
 
 export default class PWALib {
     static create(opts={}){
@@ -56,6 +57,9 @@ export default class PWALib {
         self.addEventListener('activate', listeners.activateListener);
         self.addEventListener('fetch', listeners.fetchListener);
 
+        // add default middleware
+        // add inWhiteList && isHTML
+
     }
     /**
      * @desc using decorator to add the default options param.
@@ -98,6 +102,18 @@ export default class PWALib {
     }
     get router() {
         return Toolbox.router;
+    }
+    /**
+     * add middleware function
+     * @param {Function} fn: function should be like this:
+     * (request,next){
+     *      //... doSth
+     *      next();
+     *      //.. doSth
+     * }
+     */
+    use(fn){
+        middleware.add(fn);
     }
 
 }

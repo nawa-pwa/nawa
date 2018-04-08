@@ -124,6 +124,7 @@ class Router {
         var routes = helpers.keyMatch(routeMap, pathname); // match the pathname using param.path
 
         if (routes.length > 0) {
+          // only get the first handle
           return routes[0].makeHandler(pathname);
         }
       }
