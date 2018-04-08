@@ -1,9 +1,9 @@
 'use strict';
 
 import options from './options';
+import Route from './route';
+import helpers from './helpers';
 
-var Route = require('./route');
-var helpers = require('./helpers');
 
 /**
  * the routes is a map:
