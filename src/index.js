@@ -5,6 +5,7 @@ import listeners from './lib/listeners';
 import options from './lib/options';
 import middleware from './lib/middleware/mdControler';
 
+
 export default class PWALib {
     static create(opts={}){
         let {config,stragety} = opts;
