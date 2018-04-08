@@ -1,7 +1,7 @@
 export default {
     config:{
         cache: {
-            name: now-content,
+            name: "now-content",
             maxAgeSeconds: 172800,
             maxEntries: 150,
             queryOptions: {

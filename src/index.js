@@ -1,5 +1,5 @@
 import Toolbox from './lib/sw-toolbox';
-import {getDefaultWhiteList, stringToRegexp} from './lib/helpers';
+import {getDefaultWhiteList, stringToRegexp,checkReq} from './lib/helpers';
 import {addOptions} from './lib/decorator/pwalib';
 import listeners from './lib/listeners';
 import options from './lib/options';
@@ -59,7 +59,13 @@ export default class PWALib {
 
         // add default middleware
         // add inWhiteList && isHTML
-
+        middleware.add((req,next)=>{
+            // chech req and request
+            
+            if(checkReq(req)){
+                next();
+            }
+        })
     }
     /**
      * @desc using decorator to add the default options param.

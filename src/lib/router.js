@@ -24,6 +24,8 @@ class Router {
       .set(RegExp, new Map());
     this.default = null;
 
+    this.bindMethod();
+
   }
   bindMethod() {
     [
@@ -94,13 +96,6 @@ class Router {
    * @param {Request} request fetch_request
    */
   match(request) {
-    // you can add the refer and crossorigin determination
-    let {referrer, mode, url} = request;
-
-    if (!helpers.checkReq(request)) {
-      return null;
-    }
-
     return this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
   }
   /**

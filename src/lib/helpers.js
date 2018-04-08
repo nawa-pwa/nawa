@@ -4,7 +4,7 @@ import globalOptions from './options';
 
 var idbCacheExpiration = require('./idb-cache-expiration');
 
-function debug(message, options) {
+export function debug(message, options) {
   options = options || {};
   var flag = options.debug || globalOptions.debug;
   
@@ -13,7 +13,7 @@ function debug(message, options) {
   }
 }
 
-function openCache(options) {
+export function openCache(options) {
   var cacheName;
   if (options && options.cache) {
     cacheName = options.cache.name;
@@ -23,7 +23,7 @@ function openCache(options) {
   return caches.open(cacheName);
 }
 
-function fetchAndCache(request, options) {
+export function fetchAndCache(request, options) {
   options = options || {};
   var successResponses = options.successResponses ||
     globalOptions.successResponses;
@@ -58,7 +58,7 @@ function fetchAndCache(request, options) {
 
 var cleanupQueue;
 
-function queueCacheExpiration(request, cache, cacheOptions) {
+export function queueCacheExpiration(request, cache, cacheOptions) {
   var cleanup = cleanupCache.bind(null, request, cache, cacheOptions);
 
   if (cleanupQueue) {
@@ -68,7 +68,7 @@ function queueCacheExpiration(request, cache, cacheOptions) {
   }
 }
 
-function cleanupCache(request, cache, cacheOptions) {
+export function cleanupCache(request, cache, cacheOptions) {
   var requestUrl = request.url;
   var maxAgeSeconds = cacheOptions.maxAgeSeconds;
   var maxEntries = cacheOptions.maxEntries;
@@ -97,7 +97,7 @@ function cleanupCache(request, cache, cacheOptions) {
   });
 }
 
-function renameCache(source, destination, options) {
+export function renameCache(source, destination, options) {
   debug('Renaming cache: [' + source + '] to [' + destination + ']', options);
   return caches.delete(destination).then(function () {
     return Promise.all([
@@ -120,19 +120,19 @@ function renameCache(source, destination, options) {
   });
 }
 
-function cache(url, options) {
+export function cache(url, options) {
   return openCache(options).then(function (cache) {
     return cache.add(url);
   });
 }
 
-function uncache(url, options) {
+export function uncache(url, options) {
   return openCache(options).then(function (cache) {
     return cache.delete(url);
   });
 }
 
-function precache(items) {
+export function precache(items) {
   if (!(items instanceof Promise)) {
     validatePrecacheInput(items);
   }
@@ -140,7 +140,7 @@ function precache(items) {
   globalOptions.preCacheItems = globalOptions.preCacheItems.concat(items);
 }
 
-function validatePrecacheInput(items) {
+export function validatePrecacheInput(items) {
   var isValid = Array.isArray(items);
   if (isValid) {
     items.forEach(function (item) {
@@ -159,7 +159,7 @@ function validatePrecacheInput(items) {
   return items;
 }
 
-function isResponseFresh(response, maxAgeSeconds, now) {
+export function isResponseFresh(response, maxAgeSeconds, now) {
   // If we don't have a response, then it's not fresh.
   if (!response) {
     return false;
@@ -190,7 +190,7 @@ function isResponseFresh(response, maxAgeSeconds, now) {
  * detect whether CacheStorage could save this requst
  * @param {Request} request 
  */
-function checkReq(request){
+export function checkReq(request){
   let {
     referrer,
     mode,
@@ -198,13 +198,16 @@ function checkReq(request){
   } = request;
 
   if(referrer){
-    
+
+    // check the requet is inwhiteList, and same-origin or cors
     if(inWhiteList(globalOptions.whiteList,referrer) && corsCheck(mode,url)){
       return true;
     }
   }else{
 
-    if(isHTML(url,mode)){
+    // if the request's type is HTML
+    // then, check the url is in whiteList
+    if(isHTML(url,mode) && inWhiteList(globalOptions.whiteList,url)){
       return true;
     }
 
@@ -217,7 +220,7 @@ function checkReq(request){
  * @param {Array} list 
  * @param {Request} request
  */
-function inWhiteList(list, url) {
+export function inWhiteList(list, url) {
   if (!url) return false;
 
   for (var rule of list) {
@@ -231,7 +234,7 @@ function inWhiteList(list, url) {
  * 1. when meet the same-origin request, pass it
  * 2. check the mode of request is cors (no-cors is default value)
  */
-function corsCheck(mode,url) {
+export function corsCheck(mode,url) {
   let origin = new URL(url).origin,
     swOrigin = self.location.origin;
 
@@ -245,7 +248,7 @@ function corsCheck(mode,url) {
  *        then, it will return [/https:\/\/now.qq.com\/index.html/]
  * 
  */
-function getDefaultWhiteList(origin,pathname){
+export function getDefaultWhiteList(origin,pathname){
 
   let pathArray = pathname.split('/');
 
@@ -271,7 +274,7 @@ export function stringToRegexp(lists){
   })
 }
 
-function isHTML(url,mode){
+export function isHTML(url,mode){
   return /^http.*\.html/.test(url) && mode==="navigate";
 }
 
@@ -284,7 +287,7 @@ function isHTML(url,mode){
  * @param {Set} map
  * @param {url} string
  */
-function keyMatch(map, string) {
+export function keyMatch(map, string) {
   // This would be better written as a for..of loop, but that would break the
   // minifyify process in the build.
   var entriesIterator = map.entries();
@@ -304,7 +307,7 @@ function keyMatch(map, string) {
   return matches;
 };
 
-function regexEscape(s) {
+export function regexEscape(s) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
