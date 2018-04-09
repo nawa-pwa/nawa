@@ -66,6 +66,7 @@ Constructor PWALib{
     void cacheFirstUpdate(Regexp path, Object options);
     void cacheOnly(Regexp path, Object options);
     void precache(Array urls);
+    void use(fn Function);
 }
 ```
 
@@ -109,3 +110,27 @@ Option {
     networkTimeoutSeconds: Number, // 通过线上请求时，最大等待时间
   }
 ```
+
+### 中间件使用
+
+这里针对 `fetch` 事件添加了中间件的功能。如果你想对请求做相关的额外处理的话，可以通过中间件的形式来完成。该功能常常对于某些有请求捕获的情况使用。
+
+```
+pwaControl.use((request,next)=>{
+    let {
+        mode,
+        url,
+      } = request;
+    
+      // check that the requst is HTML or not
+    if(!(/^http.*\.html/.test(url) && mode==="navigate")){
+        // the request type is not HTML 
+        next();
+    }
+})
+```
+
+通过 `use` 方法传递一个函数，里面的参数为：
+
+ - request: event.request 请求对象
+ - next: 是否执行下一个中间件，如果不执行则会在当前中间件停止。
