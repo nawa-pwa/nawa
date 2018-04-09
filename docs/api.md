@@ -130,6 +130,7 @@ pwaControl.use((request,next)=>{
 })
 ```
 
+
 通过 `use` 方法传递一个函数，里面的参数为：
 
  - request: event.request 请求对象
