@@ -27,7 +27,6 @@ import listeners  from './listeners';
 
 helpers.debug('Service Worker Toolbox is loading');
 
-
 export default {
   networkOnly: strategies.networkOnly,
   networkFirst: strategies.networkFirst,

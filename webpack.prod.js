@@ -7,13 +7,13 @@ const COMPILE = (process.env.NODE_ENV === 'compile');
 let config = {
     devtool: 'hidden-source-map',
     entry: {
-        'webpwa': path.join(__dirname,'./src/index'),
+        'nawa': path.join(__dirname,'./src/index'),
     },
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].min.js',
         libraryTarget:"umd",
-        library:"webpwa",
+        library:"nawa",
     },
     module: {
         rules: [{

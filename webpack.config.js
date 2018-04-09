@@ -7,7 +7,7 @@ const COMPILE = (process.env.NODE_ENV === 'compile');
 let config = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
-        'webpwa': path.join(__dirname,'./src/index'),
+        'nawa': path.join(__dirname,'./src/index'),
         'sw':path.join(__dirname,'./example/index')
     },
     output: {

@@ -8,7 +8,7 @@
  - cacheOnly: 只会走缓存，如果没有缓存，则会返回 undefined。该方法一般不常用。
 
 
-另外，webpwa 经由 webpack 编译，支持 es6/7 的语法模式。基本特性有：
+另外，nawa 经由 webpack 编译，支持 es6/7 的语法模式。基本特性有：
 
  - 可以根据域名和路径实现区分匹配
  - 支持缓存 HTML 的完全离线
@@ -24,13 +24,13 @@
 腾讯内部开发者，使用 tnpm 进行下载：
 
 ```
-tnpm install @tencent/webpwa --save
+tnpm install @tencent/nawa --save
 ```
 
 外部开发者，直接通过 npm 下载：
 
 ```
-npm install @tencent/webpwa --save
+npm install @tencent/nawa --save
 ```
 
 ## 上手使用
@@ -38,12 +38,12 @@ npm install @tencent/webpwa --save
 在完成项目的 `install` 之后，现在我们主要针对一个项目 `now.qq.com/qq/market/index.html` 来做接入。大致可以分为，初始化和缓存设置两步。该项目有个特点，就是可以实现全部离线的效果，并且在二次打开时会默认使用上一次更新的 HTML。
 
 ```
-import Webpwa from '@tencent/webpwa';
+import Nawa from '@tencent/nawa';
 
 # 设置基本缓存表
 const cacheDB = "now-content";
 
-let pwaControl = new Webpwa({
+let pwaControl = new Nawa({
   HTMLMatch: ['now.qq.com/qq/market/index.html'],
   cache: {
     name: cacheDB,
@@ -85,7 +85,7 @@ pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
 });
 ```
 
-完整接入文件，可以直接参考：[example docs](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
+完整接入文件，可以直接参考：[example docs](http://git.code.oa.com/ivweb/nawa/tree/master/example)
 
 ### 直接使用配置文件
 
@@ -118,7 +118,7 @@ cacheFirstUpdate:[
         ]
 ```
  
-然后加上默认的 `config` 配置即可。整个文件可以直接参考 [pwaconfig.js](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
+然后加上默认的 `config` 配置即可。整个文件可以直接参考 [pwaconfig.js](http://git.code.oa.com/ivweb/nawa/tree/master/example)
 
 最后使用 pwa 接入即可：
 
@@ -154,7 +154,7 @@ pwaControl.use((request,next)=>{
  - request: event.request 请求对象
  - next: 是否执行下一个中间件，如果不执行则会在当前中间件停止。
 
-更多可以直接参考 [api docs](http://git.code.oa.com/jimmytian/webpwa/tree/master/example)
+更多可以直接参考 [api docs](http://git.code.oa.com/ivweb/nawa/tree/master/example)
 ### 业务端接入
 
 上面只是简述了一下，如何在 sw.js 中接入 PWA，但是，接入 PWA 还需要在主业务用耦合一小段代码，这里同样提供了一个方便的接入脚本。项目可以直接参考：[satarify](http://git.code.oa.com/jimmytian/satarify)
@@ -163,7 +163,7 @@ pwaControl.use((request,next)=>{
 
 ## api 文档
 
-[api docs](http://git.code.oa.com/jimmytian/webpwa/tree/master/docs)
+[api docs](http://git.code.oa.com/ivweb/nawa/tree/master/docs)
 
 
 

@@ -1,9 +1,9 @@
 ## 构造函数
 
-通过 import 导入的 WebPWA，其构造函数参数:
+通过 import 导入的 nawa，其构造函数参数:
 
 ```
-Consturctor WebPWA: globalOption{
+Consturctor nawa: globalOption{
     cache: {Object} CacheOptions,
 	timeout: {Number} 3000 [option],
 	debug: {Boolean} false [option],
