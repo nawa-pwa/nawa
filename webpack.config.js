@@ -12,7 +12,7 @@ let config = {
         'shangfen':path.join(__dirname,'./example/shangfen'),
     },
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, 'dev'),
         filename: '[name].js',
     },
     module: {

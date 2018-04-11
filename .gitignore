@@ -6,6 +6,8 @@ rollup.config.js
 
 dist
 
+dev
+
 public
 
 /node_modules

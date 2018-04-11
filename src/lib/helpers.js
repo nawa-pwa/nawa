@@ -140,6 +140,10 @@ export function precache(items) {
   globalOptions.preCacheItems = globalOptions.preCacheItems.concat(items);
 }
 
+/**
+ * check the Precache List
+ * @param {*} items 
+ */
 export function validatePrecacheInput(items) {
   var isValid = Array.isArray(items);
   if (isValid) {
@@ -321,9 +325,6 @@ export function isServiceWorker(req){
 
   
 }
-
-
-
 
 export default {
   debug: debug,
