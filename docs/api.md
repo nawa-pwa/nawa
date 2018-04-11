@@ -8,7 +8,7 @@ Consturctor nawa: globalOption{
 	timeout: {Number} 3000 [option],
 	debug: {Boolean} false [option],
 	forceUpdate: {Boolean} true [option],
-    HTMLMatch: {Array} [],
+    whiteList: {Array} [],
 }
 
 CacheOptions {
@@ -33,7 +33,7 @@ QueryOptions{
     - queryOptions: 设置 cache.match() 匹配缓存的具体策略。
         - ignoreSearch： 忽略 query 的匹配
  - forceUpdate: 如果存在新的 sw 时，是否执行强制更新。
- - HTMLMatch: 白名单域名设置，主要通过 referrer 头进行判断。默认，则是设置和 sw.js 同路径下的 html. 比如 `https://now.qq.com/sw.js`，则默认白名单为 `https://now.qq.com/index.html`
+ - whiteList: 白名单域名设置，主要通过 referrer 头进行判断。默认，则是设置和 sw.js 同路径下的 html. 比如 `https://now.qq.com/sw.js`，则默认白名单为 `https://now.qq.com/index.html`
  - timeout: 通过 fetch 请求网络资源的最大等待时间，通常和 NetWorkFirst 策略搭配使用。默认可以设。
  - debug: 输出通过 helper.debug(xxx) 的信息。
  
@@ -43,7 +43,7 @@ QueryOptions{
 const cacheDB = "now-content";
 
 let pwaControl = new PWALib({
-  HTMLMatch: ['now.qq.com/qq/market/index.html'],
+  whiteList: ['now.qq.com/qq/market/index.html'],
   debug:true,
   cache: {
     name: cacheDB,

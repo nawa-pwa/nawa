@@ -44,7 +44,7 @@ import Nawa from '@tencent/nawa';
 const cacheDB = "now-content";
 
 let pwaControl = new Nawa({
-  HTMLMatch: ['now.qq.com/qq/market/index.html'],
+  whiteList: ['now.qq.com/qq/market/index.html'],
   cache: {
     name: cacheDB,
     maxAgeSeconds: 60 * 60 * 24 * 2, // 设置最大缓存时间
