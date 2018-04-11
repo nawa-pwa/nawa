@@ -1,6 +1,6 @@
 {
   "name": "@tencent/nawa",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "resolve the problem of fetch.request path in service worker ",
   "main": "dist/nawa.min.js",
   "scripts": {
@@ -21,6 +21,5 @@
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.8.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
