@@ -56,36 +56,8 @@ let pwaControl = new Nawa({
 });
 ```
 
-接着，我们就需要具体对某些 CDN 资源和 HTML 进行相关缓存路由设置。
 
-### 缓存 CDN 域名资源
-
-一般在站点部署时候，都会用上 CDN 节点来加速资源的发布，比如，你将相关静态的 JS | CSS | PNG 资源放在 11.url.cn 域名下。并且针对业务不同，放置在不同路径上：
-
-```
-# 缓存 11.url.cn/now/lib 路径下的 js 和 css 资源文件
-pwaControl.cacheFirst(/now\/lib\/.*\.(?:js|css).*/, {
-  origin: "11.url.cn",
-});
-
-# 缓存 11.url.cn/now/qq 路径下的 js 和 css 资源文件
-pwaControl.cacheFirst(/now\/qq\/.*\.(?:js|css|png|jpeg|jpg|webp).*/, {
-  origin: "11.url.cn",
-});
-```
-
-### 离线应用部署
-
-所谓的离线不离线，简单来说就是你的 HTML 资源是否被缓存。这里，可以针对业务不同，来设置你是否对 HTML 资源的缓存。如果打算对当前 HTML 进行离线部署，可以使用 `cacheFirstUpdate` 策略，在返回缓存之后，再对资源进行一次更新。
-
-```
-# 缓存当前 HTML 资源
-pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
-  origin: "now.qq.com",
-});
-```
-
-完整接入文件，可以直接参考：[example docs](http://git.code.oa.com/ivweb/nawa/tree/master/example)
+不过这里推荐直接使用配置文件的方式来进行接入，这样做能极大的提升开发效率，只需要 copy && paste 操作即可。
 
 ### 直接使用配置文件
 
@@ -129,6 +101,40 @@ import config from './pwa'; // load the profile
 
 PWALib.create(config);
 ```
+
+
+如果你要想通过编程来接入的话，我们就需要具体对某些 CDN 资源和 HTML 进行相关缓存路由设置。
+
+### 缓存 CDN 域名资源
+
+一般在站点部署时候，都会用上 CDN 节点来加速资源的发布，比如，你将相关静态的 JS | CSS | PNG 资源放在 11.url.cn 域名下。并且针对业务不同，放置在不同路径上：
+
+```
+# 缓存 11.url.cn/now/lib 路径下的 js 和 css 资源文件
+pwaControl.cacheFirst(/now\/lib\/.*\.(?:js|css).*/, {
+  origin: "11.url.cn",
+});
+
+# 缓存 11.url.cn/now/qq 路径下的 js 和 css 资源文件
+pwaControl.cacheFirst(/now\/qq\/.*\.(?:js|css|png|jpeg|jpg|webp).*/, {
+  origin: "11.url.cn",
+});
+```
+
+### 离线应用部署
+
+所谓的离线不离线，简单来说就是你的 HTML 资源是否被缓存。这里，可以针对业务不同，来设置你是否对 HTML 资源的缓存。如果打算对当前 HTML 进行离线部署，可以使用 `cacheFirstUpdate` 策略，在返回缓存之后，再对资源进行一次更新。
+
+```
+# 缓存当前 HTML 资源
+pwaControl.cacheFirstUpdate(/.*\.(?:html).*/, {
+  origin: "now.qq.com",
+});
+```
+
+完整接入文件，可以直接参考：[example docs](http://git.code.oa.com/ivweb/nawa/tree/master/example)
+
+
 
 ### 中间件捕获
 

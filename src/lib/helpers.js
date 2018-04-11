@@ -9,7 +9,7 @@ export function debug(message, options) {
   var flag = options.debug || globalOptions.debug;
   
   if (flag) {
-    console.log('[sw-toolbox] ' + message);
+    console.log('[nawa] ' + message);
   }
 }
 
