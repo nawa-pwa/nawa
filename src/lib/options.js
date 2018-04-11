@@ -1,4 +1,4 @@
-import { stringToRegexp } from './helpers';
+import { stringToRegexp,regexEscape } from './helpers';
 
 
 class Options {
@@ -7,6 +7,7 @@ class Options {
     this.debug = false
     this.timeout = 7
     this.whiteList = []
+    this.filename = /sw\.js$/i;
     this.preCacheItems = [] // precache resource
     // indicate when new sw.js is meeting, immediately update A regular expression
     // to apply to HTTP response codes. Codes that match will be considered
@@ -32,7 +33,7 @@ class Options {
     if(list instanceof Array){
       list = stringToRegexp(list);
     }else if(typeof list === "string"){
-      list = [new RegExp(list,'i')];
+      list = [new RegExp(regexEscape(list),'i')];
     }else{
       throw new Error('whiteList should be Array or String');
     }
@@ -40,6 +41,12 @@ class Options {
     this.whiteList = list;
 
     
+  }
+  set setFilename(file){
+    if(!(file instanceof RegExp)){
+      file = new RegExp(regexEscape(file),'i')
+    }
+    this.filename = file;
   }
 
 }

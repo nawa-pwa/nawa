@@ -8,7 +8,7 @@ import helpers from '../helpers';
  * @param {*} values
  * @param {*} options
  */
-function cacheUpdate(request, values, options) {
+export default  function cacheUpdate(request, values, options) {
 
     options = options || {};
     var cacheOptions = options.cache || globalOptions.cache;
@@ -34,4 +34,3 @@ function cacheUpdate(request, values, options) {
         });
 }
 
-module.exports = cacheUpdate;

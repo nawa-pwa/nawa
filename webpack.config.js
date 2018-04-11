@@ -8,7 +8,8 @@ let config = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         'nawa': path.join(__dirname,'./src/index'),
-        'sw':path.join(__dirname,'./example/index')
+        'index':path.join(__dirname,'./example/index'),
+        'shangfen':path.join(__dirname,'./example/shangfen'),
     },
     output: {
         path: path.join(__dirname, 'dist'),

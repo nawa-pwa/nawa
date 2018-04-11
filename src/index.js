@@ -1,14 +1,13 @@
-import Toolbox from './lib/sw-toolbox';
 import router from './lib/router';
+import Strageties from './lib/strategies';
 import {
-    networkOnly,
-    networkFirst,
-    cacheOnly,
-    cacheFirst,
-    fastest,
-    cacheUpdate
-} from './lib/strategies';
-import {getDefaultWhiteList, precache, stringToRegexp, checkReq} from './lib/helpers';
+    getDefaultWhiteList,
+    precache,
+    stringToRegexp,
+    checkReq,
+    regexEscape,
+    isServiceWorker
+} from './lib/helpers';
 import {addOptions} from './lib/decorator/pwalib';
 import listeners from './lib/listeners';
 import options from './lib/options';
@@ -46,7 +45,7 @@ export default class PWALib {
             debug: false,
             forceUpdate: true,
             whiteList: getDefaultWhiteList(self.location.origin, self.location.pathname),
-            captureSW: false,
+            filename: 'sw.js',
             cache: {},
             preCacheItems: []
         }, param);
@@ -56,6 +55,7 @@ export default class PWALib {
         options.setWhiteList = this._param.whiteList;
         options.forceUpdate = this._param.forceUpdate;
         options.captureSW = this._param.captureSW;
+        options.setFilename = this._param.filename;
         options.setCache = this._param.cache;
         options.preCacheItems = this._param.preCacheItems;
 
@@ -71,6 +71,15 @@ export default class PWALib {
             if (checkReq(req)) {
                 next();
             }
+        });
+
+        middleware.add((req, next) => {
+
+            // don't capture the seviceWorker file from other path
+            if(!isServiceWorker(req)){
+                next();
+            }
+
         })
     }
     /**
@@ -83,7 +92,8 @@ export default class PWALib {
      */
     @addOptions
     cacheFirst(path, options) {
-        router.get(path, cacheFirst, options);
+        console.log(Strageties);
+        router.get(path, Strageties.cacheFirst, options);
     }
 
     /**
@@ -96,11 +106,11 @@ export default class PWALib {
      */
     @addOptions
     cacheFirstUpdate(path, options) {
-        router.get(path, cacheUpdate, options);
+        router.get(path, Strageties.cacheUpdate, options);
     }
     @addOptions
     cacheOnly(path, options) {
-        router.get(path, cacheOnly, options);
+        router.get(path, Strageties.cacheOnly, options);
     }
 
     precache(urls) {

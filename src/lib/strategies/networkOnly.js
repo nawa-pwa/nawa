@@ -16,9 +16,8 @@
 'use strict';
 import helpers from '../helpers';
 
-function networkOnly(request, values, options) {
+export default function networkOnly(request, values, options) {
   helpers.debug('Strategy: network only [' + request.url + ']', options);
   return fetch(request);
 }
 
-module.exports = networkOnly;

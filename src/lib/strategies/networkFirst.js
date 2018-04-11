@@ -17,7 +17,7 @@
 import globalOptions from '../options';
 import helpers from '../helpers';
 
-function networkFirst(request, values, options) {
+export default function networkFirst(request, values, options) {
   options = options || {};
   var cacheOptions = options.cache || globalOptions.cache;
   var cacheQueryOptions = cacheOptions.queryOptions;
@@ -95,4 +95,4 @@ function networkFirst(request, values, options) {
   });
 }
 
-module.exports = networkFirst;
+

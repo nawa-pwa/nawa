@@ -18,7 +18,7 @@
 import helpers from '../helpers';
 import cacheOnly from './cacheOnly';
 
-function fastest(request, values, options) {
+export default function fastest(request, values, options) {
   helpers.debug('Strategy: fastest [' + request.url + ']', options);
 
   return new Promise(function(resolve, reject) {
@@ -51,4 +51,4 @@ function fastest(request, values, options) {
   });
 }
 
-module.exports = fastest;
+

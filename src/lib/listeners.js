@@ -3,8 +3,8 @@
 import options from './options';
 import router from './router';
 import middleware from './middleware/mdControler';
+import helpers from './helpers';
 
-var helpers = require('./helpers');
 
 // Event listeners
 

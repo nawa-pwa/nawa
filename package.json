@@ -4,7 +4,6 @@
   "description": "resolve the problem of fetch.request path in service worker ",
   "main": "dist/nawa.min.js",
   "scripts": {
-    "start": "NODE_ENV=dev ./node_modules/.bin/webpack -w -p",
     "build": "webpack --config webpack.prod.js --env production --progress --colors",
     "dev": "webpack --config webpack.config.js -w --env production --progress --colors",
     "release": "tnpm run build && ./publish update"

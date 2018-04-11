@@ -17,7 +17,7 @@
 import globalOptions from '../options';
 import helpers from '../helpers';
 
-function cacheOnly(request, values, options) {
+export default function cacheOnly(request, values, options) {
   options = options || {};
   var cacheOptions = options.cache || globalOptions.cache;
   var cacheQueryOptions = cacheOptions.queryOptions;
@@ -34,4 +34,4 @@ function cacheOnly(request, values, options) {
   });
 }
 
-module.exports = cacheOnly;
+

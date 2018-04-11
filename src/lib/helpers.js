@@ -267,7 +267,7 @@ export function getDefaultWhiteList(origin,pathname){
 export function stringToRegexp(lists){
   return lists.map(list=>{
     if(!(list instanceof RegExp)){
-       list = new RegExp(list,'i');
+       list = new RegExp(regexEscape(list),'i');
     }
     return list;
 
@@ -310,6 +310,19 @@ export function keyMatch(map, string) {
 export function regexEscape(s) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
+
+export function isServiceWorker(req){
+  let {
+    url,
+  } = req;
+  
+
+  return globalOptions.filename.test(url);
+
+  
+}
+
+
 
 
 export default {
