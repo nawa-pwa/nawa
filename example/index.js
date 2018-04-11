@@ -3,7 +3,7 @@
  */
 
 import PWALib from '../src';
-import config from './pwa';
+import config from './pwaconfig';
 
 
 PWALib.create(config);
