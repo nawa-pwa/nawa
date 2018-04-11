@@ -1,35 +1,43 @@
 import Toolbox from './lib/sw-toolbox';
-import {getDefaultWhiteList, stringToRegexp,checkReq} from './lib/helpers';
+import router from './lib/router';
+import {
+    networkOnly,
+    networkFirst,
+    cacheOnly,
+    cacheFirst,
+    fastest,
+    cacheUpdate
+} from './lib/strategies';
+import {getDefaultWhiteList, precache, stringToRegexp, checkReq} from './lib/helpers';
 import {addOptions} from './lib/decorator/pwalib';
 import listeners from './lib/listeners';
 import options from './lib/options';
 import middleware from './lib/middleware/mdControler';
 
-
 export default class PWALib {
-    static create(opts={}){
-        let {config,stragety} = opts;
+    static create(opts = {}) {
+        let {config, stragety} = opts;
 
         let pwa = new PWALib(config);
 
-        Object.keys(stragety).forEach(key=>{
-            stragety[key].forEach(cacheObj=>{
-                
-                if(cacheObj.path instanceof Array){
-                    // set path
-                    cacheObj.path.forEach(pathKey=>{
-                        pwa[key](cacheObj.pathKey,{
-                            origin: cacheObj.origin
-                        })
-                    })
-                }else if(cacheObj.path instanceof RegExp){
-                    pwa[key](cacheObj.path,{
-                        origin: cacheObj.origin
-                    })
-                }
+        Object
+            .keys(stragety)
+            .forEach(key => {
+                stragety[key].forEach(cacheObj => {
 
-            })
-        });
+                    if (cacheObj.path instanceof Array) {
+                        // set path
+                        cacheObj
+                            .path
+                            .forEach(pathKey => {
+                                pwa[key](cacheObj.pathKey, {origin: cacheObj.origin})
+                            })
+                    } else if (cacheObj.path instanceof RegExp) {
+                        pwa[key](cacheObj.path, {origin: cacheObj.origin})
+                    }
+
+                })
+            });
     }
     constructor(param) {
 
@@ -37,12 +45,11 @@ export default class PWALib {
             timeout: 3,
             debug: false,
             forceUpdate: true,
-            whiteList: getDefaultWhiteList(self.location.origin,self.location.pathname),
+            whiteList: getDefaultWhiteList(self.location.origin, self.location.pathname),
             captureSW: false,
-            cache:{},
-            preCacheItems:[],
+            cache: {},
+            preCacheItems: []
         }, param);
-
 
         options.debug = this._param.debug;
         options.timeout = this._param.timeout;
@@ -52,18 +59,16 @@ export default class PWALib {
         options.setCache = this._param.cache;
         options.preCacheItems = this._param.preCacheItems;
 
-        
         // Set up listeners.
         self.addEventListener('install', listeners.installListener);
         self.addEventListener('activate', listeners.activateListener);
         self.addEventListener('fetch', listeners.fetchListener);
 
-        // add default middleware
-        // add inWhiteList && isHTML
-        middleware.add((req,next)=>{
+        // add default middleware add inWhiteList && isHTML
+        middleware.add((req, next) => {
             // chech req and request
-            
-            if(checkReq(req)){
+
+            if (checkReq(req)) {
                 next();
             }
         })
@@ -78,9 +83,7 @@ export default class PWALib {
      */
     @addOptions
     cacheFirst(path, options) {
-        Toolbox
-            .router
-            .get(path, Toolbox.cacheFirst, options);
+        router.get(path, cacheFirst, options);
     }
 
     /**
@@ -93,22 +96,18 @@ export default class PWALib {
      */
     @addOptions
     cacheFirstUpdate(path, options) {
-        Toolbox
-            .router
-            .get(path, Toolbox.cacheUpdate, options);
+        router.get(path, cacheUpdate, options);
     }
     @addOptions
     cacheOnly(path, options) {
-        Toolbox
-            .router
-            .get(path, Toolbox.cacheOnly, options);
+        router.get(path, cacheOnly, options);
     }
 
     precache(urls) {
-        Toolbox.precache(urls);
+        precache(urls);
     }
     get router() {
-        return Toolbox.router;
+        return router;
     }
     /**
      * add middleware function
@@ -119,7 +118,7 @@ export default class PWALib {
      *      //.. doSth
      * }
      */
-    use(fn){
+    use(fn) {
         middleware.add(fn);
     }
 
