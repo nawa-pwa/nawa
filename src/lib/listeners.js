@@ -36,6 +36,11 @@ function flatten(items) {
   }, []);
 }
 
+/**
+ * when serviceWorker is updated, 
+ * then it will change indexDB cacheStorage name to `name-inactive-`
+ * @param {Event} event 
+ */
 function installListener(event) {
 
   var inactiveCache = options.cache.name + '-inactive-';
