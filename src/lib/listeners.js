@@ -17,7 +17,7 @@ export default class Listerners{
 
   static fetchListener(event) {
     var handler = router.match(event.request);
-  
+
     if (handler) {
       middleware.execute(event.request,()=>{
         event.respondWith(handler(event.request))

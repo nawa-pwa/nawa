@@ -74,13 +74,14 @@ export default class PWALib {
         });
 
         middleware.add((req, next) => {
-
             // don't capture the seviceWorker file from other path
             if(!isServiceWorker(req)){
                 next();
             }
 
-        })
+        });
+
+        // 检查 indexDB 里面有没有该条记录，如果存在 cacheStorage 和 indexDB 不一致的话，应该怎么解决
     }
     /**
      * @desc using decorator to add the default options param.
