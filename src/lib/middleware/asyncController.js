@@ -1,4 +1,4 @@
-import compose from './pureCompose';
+import compose from './lib/promiseCompose';
 
 
 class MiddlewareControl{

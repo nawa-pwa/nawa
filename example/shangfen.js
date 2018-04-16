@@ -33,3 +33,4 @@ pwaControl.cacheFirst(/now\/lib\/.*\.(?:js|css).*/, {
 pwaControl.cacheFirst(/now\/app\/.*\.(?:js|css|png|jpeg|jpg|webp).*/, {
   origin: "11.url.cn",
 });
+

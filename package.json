@@ -5,7 +5,7 @@
   "main": "dist/nawa.min.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js --env production --progress --colors",
-    "dev": "webpack --config webpack.config.js -w --env production --progress --colors",
+    "dev": "webpack --config webpack.config.js -w --env development --progress --colors",
     "release": "tnpm run build && ./publish update"
   },
   "author": "JimmyVV",
@@ -20,5 +20,7 @@
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.8.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0"
+  }
 }

@@ -1,8 +1,5 @@
 const path = require('path');
-const Uglifyjs = require('uglifyjs-webpack-plugin');
 
-
-const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
     devtool: 'cheap-module-eval-source-map',
@@ -23,23 +20,12 @@ let config = {
                 query: {
                     presets: ['es2015'],
                     "plugins": [
-                        ["transform-decorators-legacy"],
+                        ["transform-decorators-legacy"]
                       ]
                 }
             }]
         }]
-    },
-    plugins:[
-        new Uglifyjs({
-            uglifyOptions: {
-                compress: {
-                    pure_funcs: ['console.log']
-                },
-                warnings: false
-            }
-
-        }),
-    ]
+    }
 
 }
 

@@ -2,7 +2,7 @@
 
 import options from './options';
 import router from './router';
-import middleware from './middleware/mdControler';
+import middleware from './middleware/mdController';
 import helpers from './helpers';
 
 

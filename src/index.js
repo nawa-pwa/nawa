@@ -11,7 +11,7 @@ import {
 import {addOptions} from './lib/decorator/pwalib';
 import listeners from './lib/listeners';
 import options from './lib/options';
-import middleware from './lib/middleware/mdControler';
+import middleware from './lib/middleware/mdController';
 
 export default class PWALib {
     static create(opts = {}) {
@@ -75,7 +75,7 @@ export default class PWALib {
 
         middleware.add((req, next) => {
             // don't capture the seviceWorker file from other path
-            if(!isServiceWorker(req)){
+            if (!isServiceWorker(req)) {
                 next();
             }
 
@@ -93,7 +93,6 @@ export default class PWALib {
      */
     @addOptions
     cacheFirst(path, options) {
-        console.log(Strageties);
         router.get(path, Strageties.cacheFirst, options);
     }
 

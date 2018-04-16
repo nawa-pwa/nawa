@@ -24,6 +24,10 @@ let config = {
                     presets: ['es2015'],
                     "plugins": [
                         ["transform-decorators-legacy"],
+                        ["transform-runtime", {
+                            "polyfill": false,
+                            "regenerator": true
+                        }]
                       ]
                 }
             }]
