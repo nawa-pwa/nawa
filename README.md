@@ -95,7 +95,7 @@ cacheFirstUpdate:[
 最后使用 pwa 接入即可：
 
 ```
-import PWALib from '../src';
+import PWALib from '@tencent/nawa';
 import config from './pwa'; // load the profile
 
 
