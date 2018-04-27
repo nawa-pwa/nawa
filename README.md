@@ -192,19 +192,7 @@ pwaControl.use((request,next)=>{
 
 4. 在创建 sw.js 时，只能在和 xxx.html 同自路径，比如 now.qq.com/h5/qq/test.html 只能新建一份 ow.qq.com/h5/qq/sw.js 文件。 
 
-## tnpm 发布
 
-输入账号密码：
-
- - UserName 输入 ivwebteam_at_tencent
- - Password 输入 123456
- - Email 输入 ivwebteam@tencent.com
-
-然后，运行下列命令即可：
-
-```
-tnpm run release
-```
 
 ## 开发项目参考
 
