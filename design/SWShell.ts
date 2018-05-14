@@ -5,5 +5,4 @@ interface SwShellParam {
 
 interface SwShell {
     new(param : SwShellParam);
-
 }

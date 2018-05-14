@@ -51,3 +51,21 @@ lfu.isFull().then((urls)=>{
     }
 });
 
+
+// Entry
+
+import Nawa from 'nawa'
+
+const app = new Nawa({
+    options
+})
+
+app.use()
+
+app.syncUse()
+
+app.CacheFirst()
+
+import {Stragety,Cache} from 'nawa'
+
+

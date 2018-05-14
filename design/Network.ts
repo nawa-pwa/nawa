@@ -74,7 +74,7 @@ interface Router {
     put?: any;
     delete?: any;
     any?: any;
-    add(Param: RouterAddParam);
+    add(Param: RouterAddParam):any;
     matchMethod(method : string, url : string);
     match(request: Request):Function; // 综合全部的中间件，返回一个整体的 Function
 }

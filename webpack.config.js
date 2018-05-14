@@ -5,6 +5,7 @@ let config = {
     devtool: 'cheap-module-eval-source-map',
     entry: {
         'nawa': path.join(__dirname,'./src/index'),
+        'nawa_ts':path.join(__dirname,'./ts_src'),
         'index':path.join(__dirname,'./example/index'),
         'shangfen':path.join(__dirname,'./example/shangfen'),
     },
@@ -27,6 +28,10 @@ let config = {
                       ]
                 }
             }]
+        },{
+            test: /\.ts$/,
+            use:"ts-loader",
+            exclude:/node_modules/
         }]
     }
 
