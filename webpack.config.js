@@ -12,6 +12,9 @@ let config = {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
     },
+    resolve:{
+        extensions:["ts","js"]
+    },
     module: {
         rules: [{
             test: /\.(js|jsx)$/,
