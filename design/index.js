@@ -66,6 +66,10 @@ app.syncUse()
 
 app.CacheFirst()
 
+app.get({path: /now\/lib\/.*\.(?:js|css).*/, origin: "www.qq.com", stragety: CacheFirst()})
+
 import {Stragety,Cache} from 'nawa'
+
+
 
 

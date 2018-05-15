@@ -3,6 +3,8 @@ interface SwShellParam {
 
 }
 
-interface SwShell {
-    new(param : SwShellParam);
+class SwShell_interface implements SwShellParam{
+    constructor(skipWaiting:boolean,precache:Array<string>){
+
+    }
 }

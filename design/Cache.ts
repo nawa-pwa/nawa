@@ -1,6 +1,5 @@
 
 interface CacheDB {
-    new(param : object)
     openCache(name : string) : Cache;
     fetchAndCache(request : Request) : Response;
     save(request : Request, response : Response, cache : Cache) : Promise < boolean >;
@@ -21,10 +20,10 @@ interface CacheDBKeys {
 // And you can just pass the counts or maxSize
 interface LFU {
     new (counts?:number,maxSize?:number)
-    
+    getDB:Promise<Object>
     // check the cacheStorage is full or not,
     // if it is full, then return urls which needed to be removed
     isfull():Promise<Array<string>>; 
-    delete(url:Array<string>):Promise<boolean>;
+    delete():Promise<boolean>;
     add(request):Promise<boolean>; // update or add it
 }
