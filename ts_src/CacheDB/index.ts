@@ -1,12 +1,29 @@
 import LFU from './LFU';
 
+interface globalOptions {
+    DBName?:string,
+    maxEntry?: number;
+    query?: {
+        ignoreSearch: boolean
+    }
+
+}
+
 export default class CacheDB {
-    private DBName = "NAWA-DB";
     private sucReg = /^0|([123]\d\d)|(40[14567])|410$/;
-    private lfu = new LFU();
+    private lfu;
+    private DBName ="NAWA-DB"
+    private query?:CacheQueryOptions={
+        ignoreSearch:true
+    };
 
+    constructor(param:globalOptions) {
 
-    constructor() {
+        let {query,maxEntry,DBName} = param;
+
+        Object.assign(this.query,query);
+
+        this.lfu = new LFU(maxEntry);
 
     }
     open():Promise<Cache>{
@@ -23,9 +40,13 @@ export default class CacheDB {
             // save the record
             let urls = await this.lfu.add(request.clone());
 
-
         }
 
         return response.clone();
     }
+    async cacheFirst(){
+        
+    }
 }
+
+

@@ -1,3 +1,9 @@
+import cacheFirst from "../src/lib/strategies/cacheFirst";
+import networkFirst from "../src/lib/strategies/networkFirst";
+import networkOnly from "../src/lib/strategies/networkOnly";
+import fastest from "../src/lib/strategies/fastest";
+import cacheUpdate from "../src/lib/strategies/cacheUpdate";
+
 /**
  * 异步中间件
  */
@@ -27,6 +33,14 @@ interface Network {
     use(middleware : AsyncMiddleWare); // add middleware in fetch Listener,
     // the last outside middleware should return ctx.response
     syncUse(middleware : SyncMiddleWare);
+
+    cacheFirst();
+    cacheOnly();
+    networkFirst();
+    networkOnly();
+    fastest();
+    cacheUpdate();
+    
 }
 
 /**

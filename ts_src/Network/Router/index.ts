@@ -1,9 +1,22 @@
 'use strict';
 
 import Route from './route';
-import helpers from '../../lib';
+import {debug} from '../../Lib';
 import syncMiddleware from '../../lib/middleware/syncController';
 import asyncMiddleware from '../../lib/middleware/asyncController';
+
+
+interface stragetyOptions {
+    cacheDB?: string;
+    maxEntry?: number;
+    origin: string | RegExp;
+    query?: {
+        ignoreSearch: boolean
+    }
+
+}
+
+
 
 /**
  * the routes is a map:
@@ -24,7 +37,6 @@ export default class Router {
             .routes
             .set(RegExp, new Map());
 
-        this.bindMethod();
         self.addEventListener('fetch',this.fetchListener);
         
     }
@@ -45,19 +57,20 @@ export default class Router {
             })
         }
     }
-    bindMethod() {
-        [
-            'get',
-            'post',
-            'put',
-            'delete',
-            'head',
-            'any'
-        ].forEach(method => {
-            this[method] = (path, handler, options) => {
-                return this.add(method, path, handler, options);
-            }
-        })
+    public get(path, handler, options:stragetyOptions){
+        return this.add("get", path, handler, options);
+    }
+    public post(path, handler, options:stragetyOptions){
+        return this.add("post", path, handler, options);
+    }
+    public put(path, handler, options:stragetyOptions){
+        return this.add("put", path, handler, options);
+    }
+    public delete(path, handler, options:stragetyOptions){
+        return this.add("delete", path, handler, options);
+    }
+    public any(path, handler, options:stragetyOptions){
+        return this.add("any", path, handler, options);
     }
     /**
    * bind requesting method, like get post
@@ -66,11 +79,11 @@ export default class Router {
    * @param {Event} handler
    * @param {Object} options
    */
-    public add(method, path, handler, options) {
-        options = options || {};
+    public add(method, path, handler, options:stragetyOptions) {
+        options = options || {origin: self.location.origin};
 
         // the origin should be string or regexp
-        let origin = options.origin || self.location.origin;
+        let origin = options.origin;
         if (origin instanceof RegExp) {
             origin = origin.source;
         } else {
@@ -102,7 +115,7 @@ export default class Router {
         let regExp = route.path;
 
         if (routeMap.has(regExp.source)) {
-            helpers.debug('"' + path + '" resolves to same regex as existing route.');
+            debug('"' + path + '" resolves to same regex as existing route.');
         }
 
         routeMap.set(regExp.source, route);
