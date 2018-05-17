@@ -1,18 +1,19 @@
 {
     "compilerOptions": {
-        "rootDir": "ts_src",
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es5",
+        "lib": ["es5", "es6", "dom"],
         "sourceMap": true,
-        "allowJs": true
+        "allowJs": true,
     },
     "exclude": [
         "node_modules"
     ],
     "files": [
         "declare/service-worker.d.ts",
-        "declare/es6-promise.d.ts"
+        "declare/es6-promise.d.ts",
+        "declare/index.d.ts",
     ],
 }

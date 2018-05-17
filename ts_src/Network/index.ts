@@ -1,7 +1,7 @@
 import Router from './Router/index';
 import CacheDB from '../CacheDB';
 
-interface globalOptions {
+declare interface globalOptions {
     DBName?: string,
     maxEntry?: number;
     query?: {
@@ -9,7 +9,7 @@ interface globalOptions {
     }
 }
 
-interface routerOptions {
+declare interface routerOptions {
     path: string;
     origin: string | RegExp;
     cacheDB?: string;
