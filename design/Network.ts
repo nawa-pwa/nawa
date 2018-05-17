@@ -16,12 +16,12 @@ interface NetworkGlobal {
 }
 
 interface Network {
-    get(path : RegExp | string, handler, options);
-    post(path : RegExp | string, handler, options);
-    put(path : RegExp | string, handler, options);
-    delete(path : RegExp | string, handler, options);
-    any(path : RegExp | string, handler, options);
-    add(method : string, path : RegExp | string, handler, options);
+    get(Param: RouterAddParam);
+    post(Param: RouterAddParam);
+    put(Param: RouterAddParam);
+    delete(Param: RouterAddParam);
+    any(Param: RouterAddParam);
+    add(Param: RouterAddParam);
 
     // middleware
     use(middleware : AsyncMiddleWare); // add middleware in fetch Listener,
@@ -34,7 +34,6 @@ interface Network {
  */
 interface globalOptions {
     cacheDB : string;
-    maxAge?: number;
     maxEntry?: number;
     query?: {
         ignoreSearch: boolean
@@ -60,7 +59,7 @@ interface Stragety {
  */
 
 interface RouterAddParam {
-    method: string,
+    method?: string,
     path : RegExp | string,
     origin : string,
     handler : Stragety,

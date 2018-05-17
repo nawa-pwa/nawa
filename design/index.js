@@ -58,7 +58,9 @@ import Nawa from 'nawa'
 
 const app = new Nawa({
     options
-})
+});
+
+const {fetchAndCache,cacheFirst} = app.stragety;
 
 app.use()
 
@@ -66,7 +68,7 @@ app.syncUse()
 
 app.CacheFirst()
 
-app.get({path: /now\/lib\/.*\.(?:js|css).*/, origin: "www.qq.com", stragety: CacheFirst()})
+app.get({path: /now\/lib\/.*\.(?:js|css).*/, origin: "www.qq.com", stragety: CacheFirst})
 
 import {Stragety,Cache} from 'nawa'
 

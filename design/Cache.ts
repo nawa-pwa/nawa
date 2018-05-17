@@ -1,18 +1,21 @@
 
 interface CacheDB {
+    DBName:string;
+    sucReg: RegExp; // sucessful status of response
     openCache(name : string) : Cache;
     fetchAndCache(request : Request) : Response;
     save(request : Request, response : Response, cache : Cache) : Promise < boolean >;
     isResponseFresh(); // 检查响应是否更新
+
 }
 
 interface CacheDBKeys {
-    id: number, // primary key
-    url: string, // index,unique : false
-    usage: number, // usage times
+    url: string, // keyPath
+    usage: number, //index, usage times
     fileDate: number, // last-modified timestamp
     date: number, // timestamps
-    size: number, // Bytes
+    // size: number, // Bytes, TODO: size = request.size + response.size
+    method: string, // get | put | post | any
 }
 
 
@@ -26,4 +29,5 @@ interface LFU {
     isfull():Promise<Array<string>>; 
     delete():Promise<boolean>;
     add(request):Promise<boolean>; // update or add it
+
 }
