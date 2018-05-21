@@ -87,5 +87,3 @@ declare interface ServiceWorkerGlobalScope {
     register(tag: string): Promise<void>;
     getTags(): Promise<string[]>;
   }
-
-declare var self: ServiceWorkerGlobalScope;

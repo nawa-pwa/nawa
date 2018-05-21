@@ -1,4 +1,4 @@
-declare interface globalOptions {
+interface globalOptions {
     DBName?: string,
     maxEntry?: number;
     query?: {
@@ -16,3 +16,5 @@ declare interface routerOptions {
     }
 
 }
+
+

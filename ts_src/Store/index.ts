@@ -3,8 +3,17 @@ interface globalStore{
 }
 
 
-let store:globalStore = {
-    debug:false
+class StoreState{
+    private debugSetting=false
+
+    public set debug(value:boolean){
+        if(typeof value === 'boolean'){
+            this.debugSetting = value;
+        }
+    }
+    public get debug(){
+        return this.debugSetting;
+    }
 }
 
-export default store;
+export default new StoreState;

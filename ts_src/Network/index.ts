@@ -1,7 +1,7 @@
 import Router from './Router/index';
 import CacheDB from '../CacheDB';
 
-declare interface globalOptions {
+export declare interface globalOptions {
     DBName?: string,
     maxEntry?: number;
     query?: {

@@ -1,12 +1,12 @@
 import LFU from './LFU';
 
+
 interface globalOptions {
     DBName?:string,
     maxEntry?: number;
     query?: {
         ignoreSearch: boolean
     }
-
 }
 
 export default class CacheDB {

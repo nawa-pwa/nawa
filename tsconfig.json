@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "noImplicitAny": false,
         "moduleResolution": "node",
         "module": "commonjs",
@@ -7,13 +8,14 @@
         "lib": ["es5", "es6", "dom"],
         "sourceMap": true,
         "allowJs": true,
+        "typeRoots" : ["./types"]
     },
     "exclude": [
         "node_modules"
     ],
     "files": [
-        "declare/service-worker.d.ts",
-        "declare/es6-promise.d.ts",
-        "declare/index.d.ts",
-    ],
+        "./types/service-worker.d.ts",
+        "./types/es6-promise.d.ts",
+        "./types/index.d.ts"
+    ]
 }
