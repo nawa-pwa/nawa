@@ -8,14 +8,14 @@
         "lib": ["es5", "es6", "dom"],
         "sourceMap": true,
         "allowJs": true,
-        "typeRoots" : ["./types"]
+        "typeRoots" : ["./typings"]
     },
     "exclude": [
         "node_modules"
     ],
     "files": [
-        "./types/service-worker.d.ts",
-        "./types/es6-promise.d.ts",
-        "./types/index.d.ts"
+        "./typings/service-worker.d.ts",
+        "./typings/es6-promise.d.ts",
+        "./typings/index.d.ts"
     ]
 }

@@ -1,21 +1,10 @@
 'use strict';
+/// <reference path="../index.d.ts" />
 
 import Route from './route';
 import {debug} from '../../Lib';
 import syncMiddleware from '../../lib/middleware/syncController';
 import asyncMiddleware from '../../lib/middleware/asyncController';
-
-
-interface stragetyOptions {
-    cacheDB?: string;
-    maxEntry?: number;
-    origin: string | RegExp;
-    query?: {
-        ignoreSearch: boolean
-    }
-
-}
-
 
 /**
  * the routes is a map:
@@ -36,40 +25,45 @@ export default class Router {
             .routes
             .set(RegExp, new Map());
 
-        self.addEventListener('fetch',this.fetchListener);
-        
+        self.addEventListener('fetch', this.fetchListener);
+
     }
-    fetchListener=(event)=>{
+    private fetchListener = (event) => {
         // extract the listener event
         let handler = this.match(event.request);
 
         let store = {
-            req:event.requset,
-            request:event.request
+            req: event.requset,
+            request: event.request
         }
 
-        if(handler){
-            syncMiddleware.execute(store,()=>{
-                event.respondWith(asyncMiddleware.execute(store,()=>{
+        if (handler) {
+            syncMiddleware.execute(store, () => {
+                event.respondWith(asyncMiddleware.execute(store, () => {
                     return handler(event.request);
                 }))
             })
         }
     }
-    public get(path, handler, options:stragetyOptions){
-        return this.add("get", path, handler, options);
+    public get(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("get", path, handler, param);
     }
-    public post(path, handler, options:stragetyOptions){
-        return this.add("post", path, handler, options);
+    public post(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("post", path, handler, param);
     }
-    public put(path, handler, options:stragetyOptions){
-        return this.add("put", path, handler, options);
+    public put(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("put", path, handler, param);
     }
-    public delete(path, handler, options:stragetyOptions){
-        return this.add("delete", path, handler, options);
+    public delete(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("delete", path, handler, param);
     }
-    public any(path, handler, options:stragetyOptions){
-        return this.add("any", path, handler, options);
+    public any(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("any", path, handler, param);
     }
     /**
    * bind requesting method, like get post
@@ -78,8 +72,10 @@ export default class Router {
    * @param {Event} handler
    * @param {Object} options
    */
-    public add(method, path, handler, options:stragetyOptions) {
-        options = options || {origin: self.location.origin};
+    private add(method, path, handler, options : stragetyOptions) {
+        options = options || {
+            origin: self.location.origin
+        };
 
         // the origin should be string or regexp
         let origin = options.origin;
@@ -120,10 +116,10 @@ export default class Router {
         routeMap.set(regExp.source, route);
 
     }
-    public syncUse(middleware:Function){
+    public syncUse(middleware : syncMiddleware) {
         syncMiddleware.add(middleware);
     }
-    public use(middleware:Function){
+    public use(middleware : asyncMiddleware) {
         asyncMiddleware.add(middleware);
     }
 
@@ -132,7 +128,7 @@ export default class Router {
    * get the handle of specific route, like cacheFirst
    * @param {Request} request fetch_request
    */
-    public match(request):Function | null {
+    private match(request) : Function | null {
         return this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
     }
     /**
@@ -164,7 +160,7 @@ export default class Router {
 
         return null;
     }
-    public matchMethod(method, url) {
+    private matchMethod(method, url) {
         let urlObject = new URL(url);
         let origin = urlObject.origin;
         let path = urlObject.pathname;
@@ -177,23 +173,22 @@ export default class Router {
         let entriesIterator = map.entries();
         let item = entriesIterator.next();
         let matches = [];
-      
+
         while (!item.done) {
-          let pattern = new RegExp(item.value[0]);
-      
-          if (pattern.test(string)) {
-            // item.value(1) is map type. {method, Contructor Route}, like: {get:
-            // Route{regexp,method}}
-            matches.push(item.value[1]);
-          }
-          item = entriesIterator.next();
+            let pattern = new RegExp(item.value[0]);
+
+            if (pattern.test(string)) {
+                // item.value(1) is map type. {method, Contructor Route}, like: {get:
+                // Route{regexp,method}}
+                matches.push(item.value[1]);
+            }
+            item = entriesIterator.next();
         }
         return matches;
-      }
-      
-      private regexEscape(s) {
+    }
+
+    private regexEscape(s) {
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-      }
+    }
 
 }
-

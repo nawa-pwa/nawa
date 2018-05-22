@@ -1,0 +1,46 @@
+
+declare interface globalOptions {
+    cacheDB?: string,
+    maxEntry?: number;
+    query?: {
+        ignoreSearch: boolean
+    }
+}
+
+declare interface routerOptions {
+    path: string;
+    origin: string | RegExp;
+    query?: {
+        ignoreSearch: boolean
+    }
+}
+
+interface stragetyOptions {
+    origin: string | RegExp;
+    query?: {
+        ignoreSearch: boolean
+    }
+}
+
+
+interface routerOriginOpt{
+    path: string | RegExp;
+    origin: string | RegExp;
+    handler: (request:Request)=>Promise<Response>;
+    query?: {
+        ignoreSearch: boolean
+    }
+}
+
+interface middlewareObj{
+    request:Request;
+    response:Response
+}
+
+interface syncMiddleware{
+    (ctx:middlewareObj): void;
+}
+
+interface asyncMiddleware{
+    (ctx:middlewareObj): Promise<any>;
+}

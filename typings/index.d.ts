@@ -1,3 +1,4 @@
+
 declare interface globalOptions {
     DBName?: string,
     maxEntry?: number;

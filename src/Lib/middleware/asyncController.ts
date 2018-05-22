@@ -1,12 +1,5 @@
 import compose from './lib/promiseCompose';
 
-interface contextStore{
-    req: Request,
-    request: Request,
-    res: Response,
-    response: Response
-}
-
 class AsyncMiddlewareControl{
 
     private middleware = [];
