@@ -2,15 +2,33 @@
 
 
 import Network from './Network';
-import Store from './Store';
+import store from './Store';
+import SwShell from './SwShell';
+import defaultMiddle from './Lib/defaultMiddleware';
 
 
 
 class Nawa extends Network{
+
+    private swShell;
+
     constructor(param:NawaOptions){
         super(param.cache);
-        Store.debug = param.debug;
-        
-    } 
+        store.debug = param.debug;
+        store.filename = param.filename;
+        store.whitelist = param.whitelist;
+
+        this.swShell = new SwShell();
+
+        this.swShell.precache = param.precache;
+        this.swShell.skipWaiting = param.skipWaiting;
+
+        // add default middleware
+        super.syncUse(defaultMiddle.middlewareWhitelist);
+        super.syncUse(defaultMiddle.isServiceWorker);
+
+
+    }
+
 }
 

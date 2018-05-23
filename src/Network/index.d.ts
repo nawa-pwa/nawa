@@ -8,7 +8,7 @@ declare interface globalOptions {
 }
 
 declare interface routerOptions {
-    path: string;
+    path: string | RegExp;
     origin: string | RegExp;
     query?: {
         ignoreSearch: boolean
@@ -38,7 +38,7 @@ interface middlewareObj{
 }
 
 interface syncMiddleware{
-    (ctx:middlewareObj): void;
+    (ctx:middlewareObj,next:Function): void;
 }
 
 interface asyncMiddleware{
