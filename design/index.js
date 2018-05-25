@@ -14,8 +14,6 @@ app.syncUse(({
 
 app.use(async(ctx, next) => {
     await next()
-
-    return ctx.response;
 })
 
 // router test case

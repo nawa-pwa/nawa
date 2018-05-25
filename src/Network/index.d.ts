@@ -1,6 +1,6 @@
 
 declare interface globalOptions {
-    cacheDB?: string,
+    name?: string, // DB name
     maxEntry?: number;
     query?: {
         ignoreSearch: boolean

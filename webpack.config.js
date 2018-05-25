@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 
 let config = {
@@ -32,7 +33,17 @@ let config = {
             use:"ts-loader",
             exclude:/node_modules/
         }]
-    }
+    },
+    plugins:[
+        new HtmlWebpackPlugin({
+            title: 'middleware',
+            template: 'test/middleware/index.html',
+          }),
+          new HtmlWebpackPlugin({
+            title: 'precache',
+            template: 'test/precache/index.html',
+          })
+    ]
 
 }
 

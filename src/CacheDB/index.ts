@@ -2,7 +2,7 @@ import LFU from './LFU';
 
 
 interface globalOptions {
-    DBName?:string,
+    name?:string,
     maxEntry?: number;
     query?: {
         ignoreSearch: boolean
@@ -19,7 +19,9 @@ export default class CacheDB {
 
     constructor(param:globalOptions) {
 
-        let {query,maxEntry,DBName} = param;
+        let {query,maxEntry,name} = param;
+
+        this.DBName = name || "NAWA-DB";
 
         Object.assign(this.query,query);
 

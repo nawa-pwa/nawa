@@ -26,8 +26,7 @@ class Nawa extends Network{
         // add default middleware
         super.syncUse(defaultMiddle.middlewareWhitelist);
         super.syncUse(defaultMiddle.isServiceWorker);
-
-
+        
     }
 
 }
