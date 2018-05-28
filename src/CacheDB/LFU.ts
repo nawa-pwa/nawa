@@ -111,6 +111,14 @@ export default class LFU{
 
        return tx.complete.then(()=>urls);
     }
+    public async update(request:Request,cache:Cache){
+        let urls = await this.add(request);
+
+        urls.length && await Promise.all(urls.map(url=>{
+            return cache.delete(url,{ignoreSearch:true});
+        }))
+
+    }
 
 
     private buildDB(){

@@ -4,17 +4,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 let config = {
     devtool: 'cheap-module-eval-source-map',
+    mode:"development",
     entry: {
-        'nawa_ts':path.join(__dirname,'./ts_src'),
-        'index':path.join(__dirname,'./example/index'),
-        'shangfen':path.join(__dirname,'./example/shangfen'),
+        'middleware/index':path.join(__dirname,'test/middleware/index'),
+        'middleware/sw':path.join(__dirname,'test/middleware/sw'),
+        "precache/index":path.join(__dirname,'test/precache/index'),
+        "precache/sw":path.join(__dirname,'test/precache/sw'),
     },
     output: {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
     },
     resolve:{
-        extensions:[".ts",".js"]
+        extensions:[".ts",".js"],
+        modules:[path.resolve(__dirname, "src"), "node_modules"]
     },
     module: {
         rules: [{
@@ -38,10 +41,20 @@ let config = {
         new HtmlWebpackPlugin({
             title: 'middleware',
             template: 'test/middleware/index.html',
+            filename: 'middleware/index.html',
+            inject:true,
+            chunks:[
+                "middleware/index"
+            ]
           }),
           new HtmlWebpackPlugin({
             title: 'precache',
             template: 'test/precache/index.html',
+            filename: 'precache/index.html',
+            inject:true,
+            chunks:[
+                "precache/index"
+            ]
           })
     ]
 

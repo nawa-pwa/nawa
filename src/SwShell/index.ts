@@ -40,8 +40,15 @@ export default class SwShell{
         if(this.skipWaitingFlag){
             self.skipWaiting();
         }
+
+
         // iterate the Urls and 
         // this.precacheList.length && event.waitUntil(Promise.resolve(1))
+
+        if(this.precacheList.length){
+            // using fetchAndCache to update this files
+            // event.waitUntil()
+        }
 
     }
 }
