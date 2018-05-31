@@ -183,7 +183,7 @@ pwaControl.use((request,next)=>{
 
 2. 主业务代码怎么接入呢？
 
-可以参考 [satarify](http://git.code.oa.com/jimmytian/satarify) 项目即可。
+可以参考 [satarify](http://git.code.oa.com/ivweb/satarify) 项目即可。
 
 3. 整个接入流程是什么呢？
 
@@ -201,3 +201,9 @@ pwaControl.use((request,next)=>{
 ## 关联项目
 
 [satarify](http://git.code.oa.com/ivweb/satarify)
+
+## 学习资源
+
+[nawa 快速接入](http://km.oa.com/group/29185/articles/show/338965?kmref=kb_categories)
+
+[ServiceWorker 快速进阶](https://www.villainhr.com/page/2017/01/08/Service%20Worker%20%E5%85%A8%E9%9D%A2%E8%BF%9B%E9%98%B6)
