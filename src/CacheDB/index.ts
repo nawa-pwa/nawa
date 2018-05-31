@@ -1,3 +1,5 @@
+/// <reference path="./index.d.ts" /> 
+
 import LFU from './LFU';
 
 
@@ -93,7 +95,10 @@ export default class CacheDB {
     }
 
     /**
-     * first, get response from cacheStorage
+     * first, get response from cacheStorage. 
+     * if the response is effective,
+     *  then return it and update the record through fetchAndCache
+     * some resources often use the stragety, like .html
      * @param request Request
      */
     async cacheUpdate(request:Request):Promise<Response>{

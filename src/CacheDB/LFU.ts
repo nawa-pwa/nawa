@@ -4,7 +4,7 @@ export default class LFU{
     private DBName:string = "NAWA-DB";
     private StoreName:string = "lFU";
     private DBIndexUsage:string = "usage";
-    private deltePercent:number = 0.2; // remove 20% files
+    private deletePercent:number = 0.2; // remove 20% files
     private getDB:Promise<any>;
 
 
@@ -40,7 +40,7 @@ export default class LFU{
 
         let length = await this.count();
 
-        let needToRemove = Math.floor(length * this.deltePercent);
+        let needToRemove = Math.floor(length * this.deletePercent);
 
         let urls = [];
 
@@ -55,14 +55,13 @@ export default class LFU{
                 cursor.delete();
 
                 if(urls.length < needToRemove){
-                    cursor.continue().then(cursor)
+                    cursor.continue().then(cursorOper)
                 }
             }
 
         });
 
         return tx.complete.then(()=> urls);
-
     }
     /**
      * after get response, when it has already existed, just update it.

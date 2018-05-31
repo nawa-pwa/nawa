@@ -5,6 +5,7 @@ import Network from './Network';
 import store from './Store';
 import SwShell from './SwShell';
 import defaultMiddle from './Lib/defaultMiddleware';
+import CacheDB from './CacheDB';
 
 
 
@@ -17,6 +18,8 @@ class Nawa extends Network{
         store.debug = param.debug;
         store.filename = param.filename;
         store.whitelist = param.whitelist;
+        store.cache = new CacheDB(param.cache);
+
 
         this.swShell = new SwShell();
 

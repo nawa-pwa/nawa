@@ -1,18 +1,18 @@
 /// <reference path="./index.d.ts" />
 
 import Router from './Router/index';
-import CacheDB from '../CacheDB';
+import store from '../Store';
 
 export default class Network extends Router {
     private param : globalOptions = {
         maxEntry: 100
     }
-    private db;
+    public db;
 
     constructor(param : globalOptions) {
         super()
         Object.assign(this.param, param);
-        this.db = new CacheDB(this.param);
+        this.db = store.cache;
     }
     public cacheFirst(param : routerOptions) {
         let {path, origin, query} = param;
