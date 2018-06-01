@@ -56,6 +56,11 @@ declare class CacheDB {
     constructor(param : globalOptions)
     private sucReg:RegExp; // successful response regexp
     private lfu : LFU;
+    public precacheUrl(url):Promise<void> 
+    public fetchAndCache(request:Request):Promise<Response> 
+    public cacheFirst(request:Request):Promise<Response>
+    public networkFirst(request:Request):Promise<Response | {}>
+    public cacheUpdate(request:Request):Promise<Response>
 }
 
 

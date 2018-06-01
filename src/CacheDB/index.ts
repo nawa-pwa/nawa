@@ -35,7 +35,11 @@ export default class CacheDB {
     open():Promise<Cache>{
         return caches.open(this.DBName);
     }
-    async fetchAndCache(request):Promise<Response>{
+    public async precacheUrl(url){
+        let request = new Request(url,{mode:"cors"});
+        return this.fetchAndCache(request);
+    }
+    public async fetchAndCache(request:Request):Promise<Response>{
         let response:Response = await fetch(request.clone());
 
         if(this.sucReg.test(String(response.status))){
@@ -54,7 +58,7 @@ export default class CacheDB {
      * 
      * @param request Request
      */
-    async cacheFirst(request:Request):Promise<Response>{
+    public async cacheFirst(request:Request):Promise<Response>{
 
         let cache = await this.open();
         let response = await cache.match(request,this.query);
@@ -71,7 +75,7 @@ export default class CacheDB {
 
     }
 
-    async networkFirst(request:Request):Promise<Response | {}>{
+    public async networkFirst(request:Request):Promise<Response | {}>{
         let timeoutControl,
             cache = await this.open();
 
@@ -101,7 +105,7 @@ export default class CacheDB {
      * some resources often use the stragety, like .html
      * @param request Request
      */
-    async cacheUpdate(request:Request):Promise<Response>{
+    public async cacheUpdate(request:Request):Promise<Response>{
         let cache = await this.open();
         let response = await cache.match(request,this.query);
 

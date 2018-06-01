@@ -15,10 +15,7 @@ declare class Network {
 
     public get() : void;
     public cacheFirst(param : routerOptions) : void;
-    public cacheOnly(param : routerOptions) : void;
     public networkFirst(param : routerOptions) : void;
-    public networkOnly(param : routerOptions) : void;
-    public fastest(param : routerOptions) : void;
     public cacheUpdate(param : routerOptions) : void;
     public get(param : routerOriginOpt) : void;
     public post(param : routerOriginOpt) : void;

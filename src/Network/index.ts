@@ -16,19 +16,16 @@ export default class Network extends Router {
     }
     public cacheFirst(param : routerOptions) {
         let {path, origin, query} = param;
-        super.get({path, handler: this.db.cacheFirst, origin, query});
+        super.get({path, handler: this.db.cacheFirst.bind(this.db), origin, query});
     }
     public networkFirst(param : routerOptions) {
         let {path, origin, query} = param;
-        super.get({path, handler: this.db.networkFirst, origin, query});
+        super.get({path, handler: this.db.networkFirst.bind(this.db), origin, query});
     }
-    public fastest(param : routerOptions) {
-        let {path, origin, query} = param;
-        super.get({path, handler: this.db.fastest, origin, query});
-    }
+   
     public cacheUpdate(param : routerOptions) {
         let {path, origin, query} = param;
-        super.get({path, handler: this.db.cacheUpdate, origin, query});
+        super.get({path, handler: this.db.cacheUpdate.bind(this.db), origin, query});
     }
 
 }

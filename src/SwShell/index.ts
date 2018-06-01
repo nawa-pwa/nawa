@@ -44,8 +44,8 @@ export default class SwShell{
         if(this.precacheList.length){
             // using fetchAndCache to update this files
             event.waitUntil(Promise.all(this.precacheList.map(url=>{
-                
-            })))
+                return this.db.precacheUrl(url);
+            })));
         }
 
     }

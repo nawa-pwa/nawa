@@ -10,7 +10,7 @@ class StoreState{
     private debugSetting=false
     private whitelistReq:Array<RegExp>;
     private SWfilename:RegExp = /\/sw\.js/i;
-    public cache;
+    public cache:CacheDB;
     constructor(){
         this.whitelistReq = this.getDefaultWhiteList();
     }
