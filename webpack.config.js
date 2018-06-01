@@ -1,23 +1,29 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const webpack = require('webpack');
 
 
 let config = {
     devtool: 'cheap-module-eval-source-map',
     mode:"development",
     entry: {
-        'middleware/index':path.join(__dirname,'test/middleware/index'),
-        'middleware/sw':path.join(__dirname,'test/middleware/sw'),
-        "precache/index":path.join(__dirname,'test/precache/index'),
-        "precache/sw":path.join(__dirname,'test/precache/sw'),
+        'middleware/index': path.join(__dirname, 'test/middleware/index'),
+        'middleware/sw': path.join(__dirname, 'test/middleware/sw'),
+        "precache/index": path.join(__dirname, 'test/precache/index'),
+        "precache/sw": path.join(__dirname, 'test/precache/sw'),
     },
     output: {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
     },
-    resolve:{
-        extensions:[".ts",".js"],
-        modules:[path.resolve(__dirname, "src"), "node_modules"]
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve(__dirname, "src"), "node_modules"]
+    },
+    devServer: {
+        contentBase:"./dev",
     },
     module: {
         rules: [{
@@ -28,34 +34,48 @@ let config = {
                     presets: ['es2015'],
                     "plugins": [
                         ["transform-decorators-legacy"]
-                      ]
+                    ]
                 }
             }]
-        },{
+        }, {
             test: /\.ts$/,
-            use:"ts-loader",
-            exclude:/node_modules/
+            use: "ts-loader",
+            exclude: /node_modules/
         }]
     },
-    plugins:[
+    plugins: [
         new HtmlWebpackPlugin({
             title: 'middleware',
             template: 'test/middleware/index.html',
             filename: 'middleware/index.html',
-            inject:true,
-            chunks:[
+            inject: true,
+            chunks: [
                 "middleware/index"
             ]
-          }),
-          new HtmlWebpackPlugin({
+        }),
+        new HtmlWebpackPlugin({
             title: 'precache',
             template: 'test/precache/index.html',
             filename: 'precache/index.html',
-            inject:true,
-            chunks:[
+            inject: true,
+            chunks: [
                 "precache/index"
             ]
-          })
+        }),
+        new HtmlWebpackExternalsPlugin({
+            externals: [{
+                module: 'react',
+                entry: '//11.url.cn/now/lib/15.1.0/react-with-addons.min.js?_bid=3123',
+                global: 'React'
+            },
+            {
+                module: 'react-dom',
+                entry: '//11.url.cn/now/lib/15.1.0/react-dom.min.js?_bid=3123',
+                global: 'ReactDOM'
+            }]
+        }),
+        new CleanWebpackPlugin(['dev']),
+
     ]
 
 }

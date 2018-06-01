@@ -9,7 +9,7 @@ import CacheDB from './CacheDB';
 
 
 
-class Nawa extends Network{
+export default class Nawa extends Network{
 
     private swShell;
 
@@ -19,7 +19,6 @@ class Nawa extends Network{
         store.filename = param.filename;
         store.whitelist = param.whitelist;
         store.cache = new CacheDB(param.cache);
-
 
         this.swShell = new SwShell();
 

@@ -3,6 +3,8 @@ import store from '../Store';
 
 /// <reference path="../../typings/service-worker.d.ts" /> 
 
+declare var self: ServiceWorkerGlobalScope
+
 interface classInnerProp{
     skipWaiting:boolean; // default is true
     precache:Array<string>; // default is []
@@ -32,10 +34,10 @@ export default class SwShell{
             this.skipWaitingFlag = flag;
     }
     
-    private activateListener = (event:InstallEvent):void =>{
+    private activateListener = (event):void =>{
         debug("the new ServiceWorker has updated");
     }
-    private installListener = (event:InstallEvent):void => {
+    private installListener = (event):void => {
         if(this.skipWaitingFlag){
             self.skipWaiting();
         }

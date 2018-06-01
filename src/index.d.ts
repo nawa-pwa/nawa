@@ -1,4 +1,5 @@
 /// <reference path="./Network/index.d.ts" /> 
+/// <reference path="../typings/service-worker.d.ts" /> 
 
 interface NawaOptions {
     cache?: globalOptions;
@@ -13,7 +14,6 @@ declare class Network {
     private routes : object;
     private swShell;
 
-    public get() : void;
     public cacheFirst(param : routerOptions) : void;
     public networkFirst(param : routerOptions) : void;
     public cacheUpdate(param : routerOptions) : void;
@@ -29,4 +29,5 @@ declare class Network {
 declare class Nawa extends Network {
     constructor(param : NawaOptions);
 }
+
 

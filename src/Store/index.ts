@@ -1,8 +1,8 @@
 interface globalStore{
     debug?:boolean;
-    whitelist?:Array<RegExp>;
+    whitelist?:Array<RegExp>; // defaultly, it is the same path relative to sw.js
     filename?:RegExp;
-    cache:CacheDB
+    cache:CacheDB | any
 }
 
 
@@ -10,7 +10,7 @@ class StoreState{
     private debugSetting=false
     private whitelistReq:Array<RegExp>;
     private SWfilename:RegExp = /\/sw\.js/i;
-    public cache:CacheDB;
+    public cache:CacheDB | any;
     constructor(){
         this.whitelistReq = this.getDefaultWhiteList();
     }
