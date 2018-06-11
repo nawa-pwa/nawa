@@ -2,20 +2,29 @@ import idb from 'idb';
 
 export default class LFU{
     private DBName:string = "NAWA-DB";
-    private StoreName:string = "lFU";
+    private StoreName:string = "LFU";
     private DBIndexUsage:string = "usage";
+    private DBIndexDate:string="date";
     private deletePercent:number = 0.2; // remove 20% files
-    private getDB:Promise<any>;
 
-
-    constructor(private counts:number = 100, private maxSize:number = 200){
-        this.getDB = this.buildDB();
-    }
+    constructor(private counts:number = 100, private maxSize:number = 200){}
+    private getDB(){
+        return idb.open(this.DBName,1,upgradeDB=>{
+             switch(upgradeDB.oldVersion){
+                 case 1:
+                     let store = upgradeDB.createObjectStore(this.StoreName,{
+                         keyPath:"url",
+                     });
+                     store.createIndex(this.DBIndexUsage,this.DBIndexUsage,{unique:false})
+                     store.createIndex(this.DBIndexDate,this.DBIndexDate,{unique:true})
+             }
+         })
+     }
 
     public async count(){
-        let db:IDBDatabase = await this.getDB;
+        let db = await this.getDB();
 
-        let tx:any = db.transaction(this.DBName,"readonly")
+        let tx:any = db.transaction(this.StoreName,"readonly")
         let store = tx.objectStore(this.StoreName);
         let length = await store.count();
 
@@ -34,9 +43,9 @@ export default class LFU{
      * delete 20% of cacheFiles, and return the urls need to be removed
      */
     public async delete():Promise<Array<string>>{
-        let db = await this.getDB;
+        let db = await this.getDB();
 
-        let tx = db.transaction(this.DBName,"readwrite");
+        let tx = db.transaction(this.StoreName,"readwrite");
 
         let length = await this.count();
 
@@ -72,17 +81,19 @@ export default class LFU{
      *      
      */
     public async add(request:Request):Promise<Array<string>>{
-        let db = await this.getDB;
+        let db = await this.getDB();
 
-        let tx = db.transaction(this.DBName,'readwrite');
+        let tx = db.transaction(this.StoreName,'readwrite');
 
         let store = tx.objectStore(this.StoreName);
 
         let {url,method} = request;
 
         let record = await store.get(url);
-
+        
         let urls = [];
+
+
 
         if(record){
             record.usage++;
@@ -110,6 +121,7 @@ export default class LFU{
 
        return tx.complete.then(()=>urls);
     }
+
     public async update(request:Request,cache:Cache){
         let urls = await this.add(request);
 
@@ -120,16 +132,5 @@ export default class LFU{
     }
 
 
-    private buildDB(){
-       return idb.open(this.DBName,1,upgradeDB=>{
-            switch(upgradeDB.oldVersion){
-                case 1:
-                    let store = upgradeDB.createObjectStore(this.StoreName,{
-                        keyPath:"url",
-                    });
-                    store.createIndex(this.DBIndexUsage,this.DBIndexUsage,{unique:false})
-            }
-        })
-
-    }
+  
 }

@@ -16,6 +16,10 @@ class StoreState{
     }
 
     public set filename(file:any){
+        // when receive undefined value, then reset it.
+        if(!file){
+            file = 'sw.js';
+        }
         // it could accept string or RegExp type
         if(!(file instanceof RegExp)){
             file = new RegExp(this.regexEscape(file),'i')
@@ -44,7 +48,7 @@ class StoreState{
         if(list instanceof Array){
             this.whitelistReq = this.stringToRegexp(list);
           }else{
-            throw new Error('whiteList should be Array');
+            console.warn('whiteList should be Array');
           }
     }
 

@@ -4,14 +4,10 @@ import Router from './Router/index';
 import store from '../Store';
 
 export default class Network extends Router {
-    private param : globalOptions = {
-        maxEntry: 100
-    }
+  
     public db;
-
-    constructor(param : globalOptions) {
+    constructor() {
         super()
-        Object.assign(this.param, param);
         this.db = store.cache;
     }
     public cacheFirst(param : routerOptions) {

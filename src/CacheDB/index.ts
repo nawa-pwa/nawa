@@ -24,6 +24,7 @@ export default class CacheDB {
     constructor(param:globalOptions) {
 
         let {query,maxEntry,name} = param;
+        
 
         this.DBName = name || "NAWA-DB";
 

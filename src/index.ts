@@ -12,9 +12,26 @@ import CacheDB from './CacheDB';
 export default class Nawa extends Network{
 
     private swShell;
+    private defaultValues = {
+        cache:{
+            maxEntry:100,
+            name:"NAWA-DB",
+            query:{
+                ignoreSearch:true
+            }
+        },
+        debug:false,
+        whitelist:[], // default it [host/pathtoname/sw.js]
+        precache:[],
+        filename:'sw.js',
+        skipWaiting:true
+    };
 
+    
     constructor(param:NawaOptions){
-        super(param.cache);
+        super();
+        param = Object.assign({},this.defaultValues,param);
+
         store.debug = param.debug;
         store.filename = param.filename;
         store.whitelist = param.whitelist;
