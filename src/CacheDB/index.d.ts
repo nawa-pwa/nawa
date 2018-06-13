@@ -4,11 +4,11 @@
  * @primaryKey: url
  * @index: usage
  */
-interface LFUIndexDB{
-    url: string, // keyPath
-    usage: number, //index, usage times, used for LRU
-    date: number, // index, timestamps, used for LFU
-    fileDate: number, // last-modified timestamp
+interface LFUStoreDB{
+    url: string, // @keyPath
+    usage: number, // @index, usage times, used for LRU
+    date: number, // @index, timestamps, used for LFU
+    referrer: string, // referer header
     method: string, // get | put | post | any
     // size: number, // Bytes, TODO: size = request.size + response.size
 }
@@ -18,8 +18,10 @@ declare class LFU {
     private DBName : string;
     private StoreName : string;
     private DBIndexUsage : string;
-    private deltePercent : number;
+    private deletePercent : number;
     private getDB:Promise<any>;
+    private idbGet(url:string):Promise<LFUStoreDB>;
+    private idbAdd(data:LFUStoreDB):Promise<void>;
     /**
      * get the length of records in indexDB
      */

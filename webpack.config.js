@@ -13,6 +13,8 @@ let config = {
         'middleware/sw': path.join(__dirname, 'test/middleware/sw'),
         "precache/index": path.join(__dirname, 'test/precache/index'),
         "precache/sw": path.join(__dirname, 'test/precache/sw'),
+        "idbTest/index": path.join(__dirname, 'test/idbTest/index'),
+        "cacheMatchRule/index": path.join(__dirname, 'test/cacheMatchRule/index'),
     },
     output: {
         path: path.join(__dirname, 'dev'),
@@ -60,6 +62,24 @@ let config = {
             inject: true,
             chunks: [
                 "precache/index"
+            ]
+        }),
+        new HtmlWebpackPlugin({
+            title: 'idbTest',
+            template: 'test/idbTest/index.html',
+            filename: 'idbTest/index.html',
+            inject: true,
+            chunks: [
+                "idbTest/index"
+            ]
+        }),
+        new HtmlWebpackPlugin({
+            title: 'cacheMatchRule',
+            template: 'test/cacheMatchRule/index.html',
+            filename: 'cacheMatchRule/index.html',
+            inject: true,
+            chunks: [
+                "cacheMatchRule/index"
             ]
         }),
         new HtmlWebpackExternalsPlugin({

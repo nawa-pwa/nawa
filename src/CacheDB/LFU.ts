@@ -5,62 +5,71 @@ export default class LFU{
     private StoreName:string = "LFU";
     private DBIndexUsage:string = "usage";
     private DBIndexDate:string="date";
-    private deletePercent:number = 0.2; // remove 20% files
+    private deletePercent:number = 0.4; // remove 20% files
 
-    constructor(private counts:number = 100, private maxSize:number = 200){}
+    constructor(private maxCounts:number = 100, private ignoreSearch=true){
+       this.count()
+       .then(len=>{
+           console.log(len);
+       })
+    }
     private getDB(){
         return idb.open(this.DBName,1,upgradeDB=>{
              switch(upgradeDB.oldVersion){
+                 case 0:
                  case 1:
                      let store = upgradeDB.createObjectStore(this.StoreName,{
                          keyPath:"url",
                      });
-                     store.createIndex(this.DBIndexUsage,this.DBIndexUsage,{unique:false})
-                     store.createIndex(this.DBIndexDate,this.DBIndexDate,{unique:true})
+                     store.createIndex(this.DBIndexUsage,this.DBIndexUsage,{unique:false});
+                     store.createIndex(this.DBIndexDate,this.DBIndexDate,{unique:false});
              }
          })
      }
 
     public async count(){
         let db = await this.getDB();
-
         let tx:any = db.transaction(this.StoreName,"readonly")
         let store = tx.objectStore(this.StoreName);
-        let length = await store.count();
-
-        return tx.complete.then(()=>length);
+        return store.count();
     }
     // check whether the cacheStorage is full or not
     // the length of indexDB is more than this.counts
-    public async isFull():Promise<boolean>{
+    private isFull():Promise<boolean>{
         // reach the counts or the maxSize
         return this.count()
         .then(length=>{
-            return length > this.counts;
+            return length > this.maxCounts;
         })
+    }
+    private regexEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+    private ignoreSearchURL(url:string=''){
+        let link = new URL(url),
+        search = link.search;
+
+        return url.replace(new RegExp(this.regexEscape(search),'i'),'');
     }
     /**
      * delete 20% of cacheFiles, and return the urls need to be removed
      */
-    public async delete():Promise<Array<string>>{
+    public async LFUdelete():Promise<Array<string>>{
         let db = await this.getDB();
 
         let tx = db.transaction(this.StoreName,"readwrite");
-
-        let length = await this.count();
-
-        let needToRemove = Math.floor(length * this.deletePercent);
+        let store = tx.objectStore(this.StoreName);
+        let length = await store.count();
+        let needToRemove =Math.max(length,this.maxCounts) - this.maxCounts + Math.floor(length * this.deletePercent);
 
         let urls = [];
 
-        let store = tx.objectStore(this.StoreName);
-
-        store.index(this.DBIndexUsage)
+        length > this.maxCounts && store.index(this.DBIndexUsage)
         .openCursor().then(function cursorOper(cursor){
             if(cursor){
                 let url = cursor.value['url'];
-                urls.push(url);
-                
+                urls.push(url);  
+                console.log(urls);                            
                 cursor.delete();
 
                 if(urls.length < needToRemove){
@@ -72,6 +81,22 @@ export default class LFU{
 
         return tx.complete.then(()=> urls);
     }
+
+    private async idbAdd(data:LFUStoreDB):Promise<void>{
+        let db = await this.getDB();
+        let tx = db.transaction(this.StoreName,'readwrite');
+        let store = tx.objectStore(this.StoreName);
+
+        store.put(data);
+        return tx.complete;
+    }
+    private async idbGet(url:string){
+        let db = await this.getDB();
+
+        return db.transaction(this.StoreName)
+        .objectStore(this.StoreName).get(url);
+
+    }
     /**
      * after get response, when it has already existed, just update it.
      * otherwise, check the DB is full or not.
@@ -81,56 +106,46 @@ export default class LFU{
      *      
      */
     public async add(request:Request):Promise<Array<string>>{
-        let db = await this.getDB();
+        let {url,method,referrer} = request;
+        method = method.toLowerCase();
 
-        let tx = db.transaction(this.StoreName,'readwrite');
-
-        let store = tx.objectStore(this.StoreName);
-
-        let {url,method} = request;
-
-        let record = await store.get(url);
-        
-        let urls = [];
-
-
-
-        if(record){
-            record.usage++;
-
-            store.put(record, url);
+        if(this.ignoreSearch){
+            url = this.ignoreSearchURL(url);
+        }
+        let data = await this.idbGet(url);
+        let deleteList:Array<string> = [];
+        if(data){
+            data.usage++
         }else{
-
             if(await this.isFull()){
-                urls = await this.delete();
+                deleteList = await this.LFUdelete();
             }
-
-            // TODO: check the format of fileDate
-            let fileDate = request.headers.get('Last-Modified');
-
-            let date = Date.now();
-
-            store.put({
-                fileDate,
-                date,
+            data = {
+                url,
                 method,
-                usage:1,
-            },url);
-
+                referrer:referrer,
+                date:Date.now(),
+                usage:1
+            }
         }
 
-       return tx.complete.then(()=>urls);
-    }
+        return this.idbAdd(data).then(()=>deleteList);
 
+    }
+    /**
+     * update the record 
+     * and remove some records when reach the maximum value of storage
+     * @param request Request
+     * @param cache Cache
+     */
     public async update(request:Request,cache:Cache){
         let urls = await this.add(request);
 
         urls.length && await Promise.all(urls.map(url=>{
             return cache.delete(url,{ignoreSearch:true});
-        }))
+        }));
+
 
     }
 
-
-  
 }

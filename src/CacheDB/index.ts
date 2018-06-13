@@ -25,12 +25,11 @@ export default class CacheDB {
 
         let {query,maxEntry,name} = param;
         
-
         this.DBName = name || "NAWA-DB";
 
         Object.assign(this.query,query);
 
-        this.lfu = new LFU(maxEntry);
+        this.lfu = new LFU(maxEntry,this.query.ignoreSearch);
 
     }
     open():Promise<Cache>{
@@ -47,10 +46,11 @@ export default class CacheDB {
             let cache = await this.open();
             // save the record and remove the urls when the cacheStorage is full
             await this.lfu.update(request.clone(),cache);
-            await cache.put(request,response);
+            await cache.put(request,response.clone());
+
 
         }
-        return response.clone();
+        return response;
     }
     /**
      * first search the cacheStorage

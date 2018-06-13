@@ -192,6 +192,17 @@ pwaControl.use((request,next)=>{
 
 4. 在创建 sw.js 时，只能在和 xxx.html 同自路径，比如 now.qq.com/h5/qq/test.html 只能新建一份 ow.qq.com/h5/qq/sw.js 文件。 
 
+5. 使用 LRU 进行缓存管理有什么优势吗？
+
+LRU 真正生效的是在 CacheStorage 存储满的时候。这里有两种情况：
+
+* 使用 precache，一次性请求多个资源。此时，由于 IndexDB 本身的限制，实际得到的结果为：x_amount = x0 + x_n - x_r 
+  *  x0: 当前 IndexDB 里面存储的总量
+  *  x_n: 当前请求的资源数
+  *  x_r: indexDB 里面需要删除的数量。该数量一般是 maxCount*40%
+* 每次 fetch 捕获时，删除的公式为：x_amount = x0 + 1 - x_r 
+
+
 ## tnpm 发布
 
 输入账号密码：
