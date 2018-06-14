@@ -37,10 +37,12 @@ export default class Router {
             request: event.request
         }
 
+
         if (handler) {
             syncMiddleware.execute(store, () => {
-                event.respondWith(asyncMiddleware.execute(store, () => {
-                    return handler(event.request);
+                event.respondWith(asyncMiddleware.execute(store, async (ctx) => {
+                    // don't delete the code
+                    ctx.response = await handler(event.request);
                 }))
             })
         }

@@ -24,7 +24,6 @@ class defaultMiddleware{
         } = req;
 
         if (referrer) {
-
             // check the requet is inwhiteList, and same-origin or cors
             if (this.inWhiteList(store.whitelist, referrer) && this.corsCheck(mode, url)) {
                 return true;

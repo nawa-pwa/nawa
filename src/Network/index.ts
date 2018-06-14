@@ -5,23 +5,21 @@ import store from '../Store';
 
 export default class Network extends Router {
   
-    public db;
     constructor() {
         super()
-        this.db = store.cache;
     }
     public cacheFirst(param : routerOptions) {
-        let {path, origin, query} = param;
-        super.get({path, handler: this.db.cacheFirst.bind(this.db), origin, query});
+        let {path, origin, query,maxAge} = param;
+        super.get({path, handler: store.cache.cacheFirst.bind(store.cache), origin, query,maxAge});
     }
     public networkFirst(param : routerOptions) {
-        let {path, origin, query} = param;
-        super.get({path, handler: this.db.networkFirst.bind(this.db), origin, query});
+        let {path, origin, query,maxAge} = param;
+        super.get({path, handler: store.cache.networkFirst.bind(store.cache), origin, query,maxAge});
     }
    
     public cacheUpdate(param : routerOptions) {
-        let {path, origin, query} = param;
-        super.get({path, handler: this.db.cacheUpdate.bind(this.db), origin, query});
+        let {path, origin, query,maxAge} = param;
+        super.get({path, handler: store.cache.cacheUpdate.bind(store.cache), origin, query,maxAge});
     }
 
 }

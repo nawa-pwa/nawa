@@ -10,6 +10,7 @@ declare interface globalOptions {
 declare interface routerOptions {
     path: string | RegExp;
     origin: string | RegExp;
+    maxAge:number; // unit is second
     query?: {
         ignoreSearch: boolean
     }
@@ -29,7 +30,8 @@ interface routerOriginOpt{
     handler: (request:Request)=>Promise<Response>;
     query?: {
         ignoreSearch: boolean
-    }
+    };
+    maxAge?:number; // unit is second
 }
 
 interface middlewareObj{

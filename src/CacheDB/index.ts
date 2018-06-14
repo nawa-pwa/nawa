@@ -24,12 +24,9 @@ export default class CacheDB {
     constructor(param:globalOptions) {
 
         let {query,maxEntry,name} = param;
-        
         this.DBName = name || "NAWA-DB";
-
         Object.assign(this.query,query);
-
-        this.lfu = new LFU(maxEntry,this.query.ignoreSearch);
+        this.lfu = new LFU(maxEntry,this.query.ignoreSearch,this.DBName);
 
     }
     open():Promise<Cache>{
@@ -48,7 +45,6 @@ export default class CacheDB {
             await this.lfu.update(request.clone(),cache);
             await cache.put(request,response.clone());
 
-
         }
         return response;
     }
@@ -59,12 +55,13 @@ export default class CacheDB {
      * 
      * @param request Request
      */
-    public async cacheFirst(request:Request):Promise<Response>{
+    public async cacheFirst(request:Request,options?:routerOptions):Promise<Response>{
 
         let cache = await this.open();
         let response = await cache.match(request,this.query);
+        let {maxAge} = options;
 
-        if(response){
+        if(response && this.isUpated(response,maxAge)){
             // update its record
             // don't use <async> to speed up the response time
             this.lfu.update(request.clone(),cache);
@@ -98,7 +95,6 @@ export default class CacheDB {
 
         return Promise.race([cacheResolve,network]);
     }
-
     /**
      * first, get response from cacheStorage. 
      * if the response is effective,
@@ -116,6 +112,23 @@ export default class CacheDB {
         }
         return this.fetchAndCache(request.clone());
 
+    }
+    /**
+     * check the res is fresh
+     * @param res 
+     * @param maxAge 
+     */
+    private isUpated(res:Response,maxAge:number):boolean{
+        if(maxAge){
+            let date:any = res.headers.get('date');
+            if(date){
+                date = new Date(date);
+                if(date.getTime() + maxAge*1000 < Date.now()){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
 

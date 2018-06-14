@@ -40,6 +40,9 @@ class CacheDBTest{
 
 }
 
+/**
+ * 测试 cache.match() 方法里面，对于 string 和 requestInfo 的捕获方法
+ */
 let cacheDB = new CacheDBTest();
 
 cacheDB.addRecord()

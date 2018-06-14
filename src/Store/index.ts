@@ -45,10 +45,11 @@ class StoreState{
     }
     public set whitelist(list:Array<any>){
         // list could contain string or regexp
+
         if(list instanceof Array){
             this.whitelistReq = this.stringToRegexp(list);
           }else{
-            console.warn('whiteList should be Array');
+            console.warn('whiteList should be Array, and default is ' + this.getDefaultWhiteList());
           }
     }
 

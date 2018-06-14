@@ -21,7 +21,7 @@ class AsyncMiddlewareControl{
     add(fn){
         this.middleware.push(fn);
     }
-    execute(context,fn=()=>{}){
+    execute(context,fn){
         return compose(this.middleware)(context,fn.bind(null,context));
     }
 }

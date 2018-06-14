@@ -21,7 +21,7 @@ export default class Nawa extends Network{
             }
         },
         debug:false,
-        whitelist:[], // default it [host/pathtoname/sw.js]
+        whitelist:null, // default it [host/pathtoname/sw.js]
         precache:[],
         filename:'sw.js',
         skipWaiting:true
@@ -43,8 +43,8 @@ export default class Nawa extends Network{
         this.swShell.skipWaiting = param.skipWaiting;
 
         // add default middleware
-        super.syncUse(defaultMiddle.middlewareWhitelist);
-        super.syncUse(defaultMiddle.isServiceWorker);
+        super.syncUse(defaultMiddle.middlewareWhitelist.bind(defaultMiddle));
+        super.syncUse(defaultMiddle.isServiceWorker.bind(defaultMiddle));
         
     }
 

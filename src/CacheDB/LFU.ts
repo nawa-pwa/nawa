@@ -1,17 +1,17 @@
 import idb from 'idb';
 
 export default class LFU{
-    private DBName:string = "NAWA-DB";
+    private DBName:string ;
     private StoreName:string = "LFU";
     private DBIndexUsage:string = "usage";
     private DBIndexDate:string="date";
     private deletePercent:number = 0.4; // remove 20% files
-
-    constructor(private maxCounts:number = 100, private ignoreSearch=true){
-       this.count()
-       .then(len=>{
-           console.log(len);
-       })
+    private maxCounts:number;
+    private ignoreSearch:boolean;
+    constructor(maxCounts:number, ignoreSearch=true,DBName){
+        this.maxCounts = maxCounts || 100;
+        this.ignoreSearch = ignoreSearch;
+        this.DBName = DBName || "NAWA-DB";
     }
     private getDB(){
         return idb.open(this.DBName,1,upgradeDB=>{
