@@ -1,13 +1,6 @@
 import satarify from '@tencent/satarify';
 
 
-
-
-fetch("https://nearby.qq.com/nearby-index/index-new.html?_wv=16777223&_wwv=4&_nav_txtclr=000000&_from=2&talent=1",{
-    mode:"cors"
-})
-
-
 let precacheList = (function(){
     let maxTempalte = 10;
 
@@ -22,6 +15,10 @@ let precacheList = (function(){
     }
 })();
 
+
+fetch("https://11.url.cn/now/lib/15.1.0/react-with-addons.min.js?_bid=3123",{
+    mode:"cors"
+});
 
 
 satarify.register('./sw.js');

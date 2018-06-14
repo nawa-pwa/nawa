@@ -13,17 +13,12 @@ let app = new Nawa({
 });
 
 
-app.cacheFirst({
+app.cacheUpdate({
     path:/now\/lib\/smiley_.*\.png/,
     origin:"11.url.cn"
 });
 
-// html
-// cacheUpdate
-app.cacheUpdate({
-    path:/nearyby-index\/(.*)\.html/,
-    origin:"nearby.qq.com"
-})
-
-
-
+app.cacheFirst({
+    path:/now\/lib\/.*\.js/,
+    origin:"11.url.cn"
+});

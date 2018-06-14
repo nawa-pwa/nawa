@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
+const striPlugin = require("webpack-subresource-integrity");
 const webpack = require('webpack');
 
 
@@ -21,6 +22,7 @@ let config = {
     output: {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
+        // crossorigin: 'anonymous'
     },
     resolve: {
         extensions: [".ts", ".js"],
@@ -106,7 +108,9 @@ let config = {
             }]
         }),
         new CleanWebpackPlugin(['dev']),
-
+        new striPlugin({ // 添加 crossorigin 头
+            hashFuncNames: ['sha256', 'sha384']
+        }),
     ]
 
 }
