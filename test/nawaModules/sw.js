@@ -1,4 +1,4 @@
-import Nawa from '@tencent/nawa';
+import Nawa from 'dist/nawa.min.js';
 
 
 

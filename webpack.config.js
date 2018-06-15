@@ -10,7 +10,7 @@ const glob = require("glob");
 
 let config = {
     devtool: 'cheap-module-eval-source-map',
-    mode:"development",
+    // mode:"development",
     entry: {
         'middleware/index': path.join(__dirname, 'test/middleware/index'),
         'middleware/sw': path.join(__dirname, 'test/middleware/sw'),
@@ -23,15 +23,17 @@ let config = {
         "whitelist/sw": path.join(__dirname, 'test/whitelist/sw'),
         "whitelist/index": path.join(__dirname, 'test/whitelist/index'),
         "whitelist/precache/index": path.join(__dirname, 'test/whitelist/precache/index'),
+        "nawaModules/sw": path.join(__dirname, 'test/nawaModules/sw'),
+        "nawaModules/index": path.join(__dirname, 'test/nawaModules/index'),
     },
     output: {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
-        // crossorigin: 'anonymous'
+        // crossOriginLoading: 'anonymous'
     },
     resolve: {
         extensions: [".ts", ".js"],
-        modules: [path.resolve(__dirname, "src"), "node_modules"]
+        modules: [path.resolve(__dirname, "src"), "node_modules",path.resolve(__dirname)]
     },
     devServer: {
         contentBase:"./dev",
@@ -39,6 +41,7 @@ let config = {
     module: {
         rules: [{
             test: /\.(js|jsx)$/,
+            exclude: /dist/,
             use: [{
                 loader: 'babel-loader',
                 query: {
@@ -98,6 +101,15 @@ let config = {
             inject: true,
             chunks: [
                 "routeMatch/index"
+            ]
+        }),
+        new HtmlWebpackPlugin({
+            title: 'nawaModules',
+            template: 'test/nawaModules/index.html',
+            filename: 'nawaModules/index.html',
+            inject: true,
+            chunks: [
+                "nawaModules/index"
             ]
         }),
         new HtmlWebpackExternalsPlugin({

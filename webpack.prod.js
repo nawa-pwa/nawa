@@ -4,7 +4,7 @@ const Uglifyjs = require('uglifyjs-webpack-plugin');
 const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
-    mode:"production",
+    // mode:"production",
     devtool: 'hidden-source-map',
     entry: {
         'nawa': path.join(__dirname, './src/index')
@@ -12,8 +12,8 @@ let config = {
     output: {
         path: path.join(__dirname, 'dist'),
         filename: '[name].min.js',
-        libraryTarget: "umd",
-        library: "nawa"
+        libraryTarget: 'umd',
+        library: "nawa",
     },
     resolve: {
         extensions: [".ts", ".js"],
@@ -28,15 +28,15 @@ let config = {
                         loader: 'babel-loader',
                         query: {
                             presets: ['es2015'],
-                            "plugins": [
-                                ["transform-decorators-legacy"],
-                                [
-                                    "transform-runtime", {
-                                        "polyfill": false,
-                                        "regenerator": true
-                                    }
-                                ]
-                            ]
+                            // "plugins": [
+                            //     ["transform-decorators-legacy"],
+                            //     [
+                            //         "transform-runtime", {
+                            //             "polyfill": false,
+                            //             "regenerator": true
+                            //         }
+                            //     ]
+                            // ]
                         }
                     }
                 ]
