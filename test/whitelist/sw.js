@@ -7,17 +7,14 @@ import LFU from '../../src/CacheDB/LFU';
 let app = new Nawa({
     skipWaiting:true,
     debug:true,
+    whitelist:[/whitelist\/index\.html/],
     cache:{
-        name:"RouteTest"
+        name:"whiteList"
     }
 });
 
 app.cacheUpdate({
-    path:/now\/lib\/smiley_.*\.png/,
-    origin:"11.url.cn"
+    path:/whitelist\/index\.html/,
+    origin:"localhost:8080"
 });
 
-app.cacheFirst({
-    path:/now\/lib\/.*\.js/,
-    origin:"11.url.cn"
-});

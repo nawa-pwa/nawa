@@ -4,6 +4,8 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 const striPlugin = require("webpack-subresource-integrity");
 const webpack = require('webpack');
+const glob = require("glob");
+
 
 
 let config = {
@@ -18,6 +20,9 @@ let config = {
         "cacheMatchRule/index": path.join(__dirname, 'test/cacheMatchRule/index'),
         "routeMatch/index": path.join(__dirname, 'test/routeMatch/index'),
         "routeMatch/sw": path.join(__dirname, 'test/routeMatch/sw'),
+        "whitelist/sw": path.join(__dirname, 'test/whitelist/sw'),
+        "whitelist/index": path.join(__dirname, 'test/whitelist/index'),
+        "whitelist/precache/index": path.join(__dirname, 'test/whitelist/precache/index'),
     },
     output: {
         path: path.join(__dirname, 'dev'),

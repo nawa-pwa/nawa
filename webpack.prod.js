@@ -4,6 +4,7 @@ const Uglifyjs = require('uglifyjs-webpack-plugin');
 const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
+    mode:"production",
     devtool: 'hidden-source-map',
     entry: {
         'nawa': path.join(__dirname, './src/index')
@@ -13,6 +14,10 @@ let config = {
         filename: '[name].min.js',
         libraryTarget: "umd",
         library: "nawa"
+    },
+    resolve: {
+        extensions: [".ts", ".js"],
+        modules: [path.resolve(__dirname, "src"), "node_modules"]
     },
     module: {
         rules: [
@@ -35,6 +40,11 @@ let config = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.ts$/,
+                use: "ts-loader",
+                exclude: /node_modules/
             }
         ]
     },

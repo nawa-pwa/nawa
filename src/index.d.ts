@@ -4,7 +4,7 @@
 interface NawaOptions {
     cache?: globalOptions;
     debug?: boolean;
-    whitelist?:Array<string>;
+    whitelist?:Array<string|RegExp>;
     precache?:Array<string>;
     filename?:string;
     skipWaiting?:boolean;

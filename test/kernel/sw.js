@@ -5,4 +5,3 @@ let app = new Nawa({
     debug:true,
 });
 
-
