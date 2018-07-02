@@ -4,8 +4,7 @@
 
 
  - cacheFirst: 优先走缓存，并且检查当前缓存是否超过有效期限，默认值是 2 天，这里可以根据具体的文件来设置。
- - cacheFirstUpdate: 优先走缓存，并且会在每次返回缓存之后，额外进行后台更新。常常用于 HTML 资源文件。
- - cacheOnly: 只会走缓存，如果没有缓存，则会返回 undefined。该方法一般不常用。
+ - cacheUpdate: 优先走缓存，并且会在每次返回缓存之后，额外进行后台更新。常常用于 HTML 资源文件。
 
 
 另外，nawa 经由 webpack 编译，支持 es6/7 的语法模式。基本特性有：
@@ -44,15 +43,7 @@ import Nawa from '@tencent/nawa';
 const cacheDB = "now-content";
 
 let pwaControl = new Nawa({
-  whiteList: ['now.qq.com/qq/market/index.html'],
-  cache: {
-    name: cacheDB,
-    maxAgeSeconds: 60 * 60 * 24 * 2, // 设置最大缓存时间
-    maxEntries:150, // 设置最大缓存数量
-    queryOptions: { // 设置缓存忽略的匹配
-      ignoreSearch: true
-    }
-  }
+  whiteList: ['now.qq.com/qq/market/index.html']
 });
 ```
 
@@ -163,7 +154,7 @@ pwaControl.use((request,next)=>{
 更多可以直接参考 [api docs](http://git.code.oa.com/ivweb/nawa/tree/master/example)
 ### 业务端接入
 
-上面只是简述了一下，如何在 sw.js 中接入 PWA，但是，接入 PWA 还需要在主业务用耦合一小段代码，这里同样提供了一个方便的接入脚本。项目可以直接参考：[satarify](http://git.code.oa.com/jimmytian/satarify)
+上面只是简述了一下，如何在 sw.js 中接入 PWA，但是，接入 PWA 还需要在主业务用耦合一小段代码，这里同样提供了一个方便的接入脚本。项目可以直接参考：[nawa-register](http://git.code.oa.com/nawa/nawa-register)
 
 
 
@@ -183,16 +174,24 @@ pwaControl.use((request,next)=>{
 
 2. 主业务代码怎么接入呢？
 
-可以参考 [satarify](http://git.code.oa.com/ivweb/satarify) 项目即可。
+可以参考 [nawa-reigster](http://git.code.oa.com/nawa/nawa-register) 项目即可。
 
 3. 整个接入流程是什么呢？
 
  - 首先创建你的 sw.js，比如，在 Now 中直接在 now-qq-pwa 项目里面自己新建一份 sw.js 文件
- - 创建完毕后，在主业务中，使用 [satarify](http://git.code.oa.com/jimmytian/satarify) 直接接入。具体目录划分可以直接参考 [h5-share](http://git.code.oa.com/avweb/now-h5-trunk/tree/master/src/pages/index) 项目。
+ - 创建完毕后，在主业务中，使用 [nawa-reigster](http://git.code.oa.com/nawa/nawa-register) 直接接入。具体目录划分可以直接参考 [h5-share](http://git.code.oa.com/avweb/now-h5-trunk/tree/master/src/pages/index) 项目。
 
 4. 在创建 sw.js 时，只能在和 xxx.html 同自路径，比如 now.qq.com/h5/qq/test.html 只能新建一份 ow.qq.com/h5/qq/sw.js 文件。 
 
+5. 使用 LRU 进行缓存管理有什么优势吗？
 
+LRU 真正生效的是在 CacheStorage 存储满的时候。这里有两种情况：
+
+* 使用 precache，一次性请求多个资源。此时，由于 IndexDB 本身的限制，实际得到的结果为：x_amount = x0 + x_n - x_r 
+  *  x0: 当前 IndexDB 里面存储的总量
+  *  x_n: 当前请求的资源数
+  *  x_r: indexDB 里面需要删除的数量。该数量一般是 maxCount*40%
+* 每次 fetch 捕获时，删除的公式为：x_amount = x0 + 1 - x_r  
 
 ## 开发项目参考
 
@@ -200,10 +199,4 @@ pwaControl.use((request,next)=>{
 
 ## 关联项目
 
-[satarify](http://git.code.oa.com/ivweb/satarify)
-
-## 学习资源
-
-[nawa 快速接入](http://km.oa.com/group/29185/articles/show/338965?kmref=kb_categories)
-
-[ServiceWorker 快速进阶](https://www.villainhr.com/page/2017/01/08/Service%20Worker%20%E5%85%A8%E9%9D%A2%E8%BF%9B%E9%98%B6)
+[nawa-register](http://git.code.oa.com/nawa/nawa-register)

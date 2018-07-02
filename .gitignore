@@ -1,13 +1,9 @@
 .DS_Store
-
 .vscode
-
 rollup.config.js
-
 dist
-
 dev
-
 public
-
 /node_modules
+_src
+example

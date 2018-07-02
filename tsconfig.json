@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "es5",
+        "lib": ["es5", "es6", "dom","webworker"],
+        "sourceMap": true,
+        "allowJs": true,
+        "typeRoots" : ["./typings"],
+        "experimentalDecorators":true,
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "files": [
+        "./typings/service-worker.d.ts",
+        "./typings/es6-promise.d.ts",
+        "./typings/index.d.ts"
+    ]
+}
