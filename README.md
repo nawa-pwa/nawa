@@ -193,7 +193,6 @@ LRU 真正生效的是在 CacheStorage 存储满的时候。这里有两种情
   *  x_r: indexDB 里面需要删除的数量。该数量一般是 maxCount*40%
 * 每次 fetch 捕获时，删除的公式为：x_amount = x0 + 1 - x_r  
 
-
 ## 开发项目参考
 
 [pwa-qq](http://git.code.oa.com/ivweb/now-qq-pwa)

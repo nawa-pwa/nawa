@@ -12,6 +12,5 @@ export default class Route {
       return function (request) {
         return this.handler(request, this.options);
       }.bind(this);
-      
     }
   }
