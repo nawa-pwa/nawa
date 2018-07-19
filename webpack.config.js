@@ -29,7 +29,7 @@ let config = {
     output: {
         path: path.join(__dirname, 'dev'),
         filename: '[name].js',
-        // crossOriginLoading: 'anonymous'
+        crossOriginLoading: 'anonymous'
     },
     resolve: {
         extensions: [".ts", ".js"],

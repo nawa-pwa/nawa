@@ -30,22 +30,31 @@ export default class Router {
     }
     private fetchListener = (event) => {
         // extract the listener event
-        let handler = this.match(event.request);
-
         let store = {
             req: event.requset,
             request: event.request
         }
 
 
-        if (handler) {
-            syncMiddleware.execute(store, () => {
-                event.respondWith(asyncMiddleware.execute(store, async (ctx) => {
-                    // don't delete the code
-                    ctx.response = await handler(event.request);
-                }))
-            })
-        }
+        syncMiddleware.execute(store, () => {
+
+            let handler = this.match(event.request);
+            
+            debug(`handle is ${handler}` );
+            handler && event.respondWith(asyncMiddleware.execute(store, async (ctx) => {
+
+                debug(`handle to resolve the req, ${event.request.url}`);
+                // don't delete the code
+                ctx.response = await handler(event.request);
+            }))
+        })
+    }
+    /**
+     * when throw error, clear all variable and remove listeners
+     */
+    public revoke():void{
+        self.removeEventListener('fetch',this.fetchListener);
+        this.routes = null;
     }
     public get(param : routerOriginOpt) {
         let {path, handler} = param;

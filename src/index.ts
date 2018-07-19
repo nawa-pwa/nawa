@@ -15,7 +15,6 @@ export default class Nawa extends Network{
     private defaultValues = {
         cache:{
             maxEntry:100,
-            name:"NAWA-DB",
             query:{
                 ignoreSearch:true
             }
@@ -27,9 +26,19 @@ export default class Nawa extends Network{
         skipWaiting:true
     };
 
+    public revoke():void{
+        super.revoke();
+    }
+
     
     constructor(param:NawaOptions){
         super();
+        
+        if(!param.cache.name){
+            // prevent many SWs use the same indexDB named "NAWA-DB"
+            throw new Error('Nawa: you need to give the cache.name property, which should be diff from other sw');
+        }
+
         param = Object.assign({},this.defaultValues,param);
 
         store.debug = param.debug;
@@ -45,6 +54,7 @@ export default class Nawa extends Network{
         // add default middleware
         super.syncUse(defaultMiddle.middlewareWhitelist.bind(defaultMiddle));
         super.syncUse(defaultMiddle.isServiceWorker.bind(defaultMiddle));
+        super.syncUse(defaultMiddle.bypassNetwork.bind(defaultMiddle));
         
     }
 
