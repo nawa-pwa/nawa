@@ -7,24 +7,23 @@ interface NawaOptions {
     skipWaiting?:boolean;
 }
 
-declare class Network {
-    private routes : object;
-    private swShell;
 
-    public cacheFirst(param : routerOptions) : void;
-    public networkFirst(param : routerOptions) : void;
-    public cacheUpdate(param : routerOptions) : void;
-    public get(param : routerOriginOpt) : void;
-    public post(param : routerOriginOpt) : void;
-    public put(param : routerOriginOpt) : void;
-    public delete(param : routerOriginOpt) : void;
-
-    public use(middleware : asyncMiddleware) : void;
-    public syncUse(middleware : syncMiddleware) : void;
+interface NawaContructor{
+    new (param: NawaOptions):Nawa;
 }
+interface Nawa{
+    constructor:NawaContructor;
+    cacheFirst(param : routerOptions) : void;
+    networkFirst(param : routerOptions) : void;
+    cacheUpdate(param : routerOptions) : void;
+    get(param : routerOriginOpt) : void;
+    post(param : routerOriginOpt) : void;
+    put(param : routerOriginOpt) : void;
+    delete(param : routerOriginOpt) : void;
 
-declare class Nawa extends Network {
-    constructor(param : NawaOptions);
+    revoke():void; // when meet error, remove all listeners
+    use(middleware : asyncMiddleware) : void;
+    syncUse(middleware : syncMiddleware) : void;
 }
 
 export default Nawa;
