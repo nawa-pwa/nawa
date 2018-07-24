@@ -51,9 +51,10 @@ let config = {
     plugins: [new Uglifyjs({
             uglifyOptions: {
                 compress: {
-                    pure_funcs: ['debug']
+                    pure_funcs: ['debug'],
+                    drop_console:false
                 },
-                warnings: false
+                warnings: false,
             }
 
         })]
