@@ -1,7 +1,10 @@
 .DS_Store
 
 .vscode
-
+design
+typings
+test
+webpack
 _src
 example
 /node_modules
