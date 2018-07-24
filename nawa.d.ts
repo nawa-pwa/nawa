@@ -26,3 +26,5 @@ declare class Network {
 declare class Nawa extends Network {
     constructor(param : NawaOptions);
 }
+
+export default Nawa;

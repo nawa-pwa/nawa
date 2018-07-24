@@ -11,6 +11,7 @@
   },
   "author": "JimmyVV",
   "typings": "./nawa.d.ts",
+  "types": "./nawa.d.ts",
   "license": "ISC",
   "devDependencies": {
     "async": "^2.6.1",
