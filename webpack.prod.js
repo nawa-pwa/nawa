@@ -55,7 +55,6 @@ let config = {
             uglifyOptions: {
                 compress: {
                     pure_funcs: ['debug'],
-                    drop_console:false
                 },
                 warnings: false,
             }
