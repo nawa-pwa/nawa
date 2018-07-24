@@ -2,5 +2,6 @@
 
 .vscode
 
+_src
 example
 /node_modules
