@@ -35,6 +35,7 @@ export default class Router {
             request: event.request
         }
 
+        debug(`event request is ${event.request.url} and mode is ${event.request.mode}`);
 
         syncMiddleware.execute(store, () => {
 
