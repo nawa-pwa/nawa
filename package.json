@@ -1,6 +1,6 @@
 {
   "name": "@tencent/nawa",
-  "version": "0.1.34",
+  "version": "0.1.35",
   "description": "resolve the problem of fetch.request path in service worker ",
   "main": "dist/nawa.min.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "test": "webpack-dev-server --open"
   },
   "author": "JimmyVV",
-  "typings":"./nawa.d.ts",
+  "typings": "./nawa.d.ts",
   "license": "ISC",
   "devDependencies": {
     "async": "^2.6.1",
