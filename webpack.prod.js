@@ -1,5 +1,6 @@
 const path = require('path');
 const Uglifyjs = require('uglifyjs-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const COMPILE = (process.env.NODE_ENV === 'compile');
 
@@ -48,7 +49,9 @@ let config = {
             }
         ]
     },
-    plugins: [new Uglifyjs({
+    plugins: [
+        new CleanWebpackPlugin(['dist'])
+        ,new Uglifyjs({
             uglifyOptions: {
                 compress: {
                     pure_funcs: ['debug'],
