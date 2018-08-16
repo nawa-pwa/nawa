@@ -23,13 +23,13 @@
 腾讯内部开发者，使用 tnpm 进行下载：
 
 ```
-tnpm install @tencent/nawa --save
+tnpm install nawa --save
 ```
 
 外部开发者，直接通过 npm 下载：
 
 ```
-npm install @tencent/nawa --save
+npm install nawa --save
 ```
 
 ## 上手使用
@@ -37,7 +37,7 @@ npm install @tencent/nawa --save
 在完成项目的 `install` 之后，现在我们主要针对一个项目 `now.qq.com/qq/market/index.html` 来做接入。大致可以分为，初始化和缓存设置两步。该项目有个特点，就是可以实现全部离线的效果，并且在二次打开时会默认使用上一次更新的 HTML。
 
 ```
-import Nawa from '@tencent/nawa';
+import Nawa from 'nawa';
 
 # 设置基本缓存表
 const cacheDB = "now-content";

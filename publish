@@ -2,4 +2,4 @@
 
 echo $1
 
-tnpm run release && git add . && git commit -m "$1" && npm version patch && git push  && tnpm publish
+npm run release && git add . && git commit -m "$1" && npm version patch && git push  && npm publish
