@@ -174,12 +174,12 @@ pwaControl.use((request,next)=>{
 
 2. 主业务代码怎么接入呢？
 
-可以参考 [nawa-reigster](http://git.code.oa.com/nawa/nawa-register) 项目即可。
+可以参考 [nawa-reigster](https://github.com/nawa-pwa/nawa-register) 项目即可。
 
 3. 整个接入流程是什么呢？
 
  - 首先创建你的 sw.js，比如，在 Now 中直接在 now-qq-pwa 项目里面自己新建一份 sw.js 文件
- - 创建完毕后，在主业务中，使用 [nawa-reigster](http://git.code.oa.com/nawa/nawa-register) 直接接入。具体目录划分可以直接参考 [h5-share](http://git.code.oa.com/avweb/now-h5-trunk/tree/master/src/pages/index) 项目。
+ - 创建完毕后，在主业务中，使用 [nawa-reigster](https://github.com/nawa-pwa/nawa-register) 直接接入。
 
 4. 在创建 sw.js 时，只能在和 xxx.html 同自路径，比如 now.qq.com/h5/qq/test.html 只能新建一份 ow.qq.com/h5/qq/sw.js 文件。 
 
@@ -192,4 +192,5 @@ LRU 真正生效的是在 CacheStorage 存储满的时候。这里有两种情
   *  x_n: 当前请求的资源数
   *  x_r: indexDB 里面需要删除的数量。该数量一般是 maxCount*40%
 * 每次 fetch 捕获时，删除的公式为：x_amount = x0 + 1 - x_r  
+
 
