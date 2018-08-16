@@ -80,9 +80,8 @@ cacheFirstUpdate:[
             }
         ]
 ```
- 
-然后加上默认的 `config` 配置即可。整个文件可以直接参考 [pwaconfig.js](http://git.code.oa.com/ivweb/nawa/tree/master/example)
 
+然后加上默认的 `config` 配置即可。整个文件可以直接参考[pwaconfig.js(http://git.code.oa.com/ivweb/nawa/tree/master/example)
 最后使用 pwa 接入即可：
 
 ```
