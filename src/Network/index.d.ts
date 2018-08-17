@@ -46,3 +46,5 @@ interface syncMiddleware{
 interface asyncMiddleware{
     (ctx:middlewareObj): Promise<any>;
 }
+
+type RequestHandler = (ctx)=> Promise<Response>;

@@ -57,9 +57,11 @@ export default class Router {
         self.removeEventListener('fetch',this.fetchListener);
         this.routes = null;
     }
-    public get(param : routerOriginOpt) {
-        let {path, handler} = param;
-        return this.add("get", path, handler, param);
+
+
+    public get(routePath: RegExp, handler: RequestHandler){
+
+        
     }
     public post(param : routerOriginOpt) {
         let {path, handler} = param;
@@ -84,7 +86,7 @@ export default class Router {
    * @param {Event} handler
    * @param {Object} options
    */
-    private add(method, path, handler, options : stragetyOptions) {
+    private add(method, routePath:RegExp, handler) {
         options = options || {
             origin: self.location.origin
         };
@@ -128,6 +130,11 @@ export default class Router {
         routeMap.set(regExp.source, route);
 
     }
+
+    public add(method,routePath:RegExp, handler:RequestHandler){
+        
+    }
+
     public syncUse(middleware : syncMiddleware) {
         syncMiddleware.add(middleware);
     }
