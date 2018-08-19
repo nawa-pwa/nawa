@@ -25,7 +25,7 @@ let config = {
         "whitelist/precache/index": path.join(__dirname, 'test/whitelist/precache/index'),
         "nawaModules/sw": path.join(__dirname, 'test/nawaModules/sw'),
         "nawaModules/index": path.join(__dirname, 'test/nawaModules/index'),
-        "swProperty/index": path.join(__dirname, 'test/nawaModules/index'),
+        "nawaModules/index": path.join(__dirname, 'test/nawaModules/index'),
     },
     output: {
         path: path.join(__dirname, 'dev'),

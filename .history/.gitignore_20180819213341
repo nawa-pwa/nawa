@@ -7,6 +7,5 @@ public
 /node_modules
 _src
 example
-.gitignore
 
 package-lock.json
