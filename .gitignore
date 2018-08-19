@@ -8,5 +8,6 @@ public
 _src
 example
 .gitignore
+.history
 
 package-lock.json

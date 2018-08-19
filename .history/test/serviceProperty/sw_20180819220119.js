@@ -1,5 +1,0 @@
-
-/**
- * get regist
- */
-console.log();
