@@ -86,7 +86,7 @@ export default class Router {
    * @param {Event} handler
    * @param {Object} options
    */
-    private add(method, routePath:RegExp, handler) {
+    private add(method: methodString, routePath:RegExp, handler) {
         options = options || {
             origin: self.location.origin
         };

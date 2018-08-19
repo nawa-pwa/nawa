@@ -48,3 +48,4 @@ interface asyncMiddleware{
 }
 
 type RequestHandler = (ctx)=> Promise<Response>;
+type methodString = "get" | "post" | "put" | "any" | "delete"

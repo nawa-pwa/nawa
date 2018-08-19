@@ -7,5 +7,6 @@ public
 /node_modules
 _src
 example
+.history
 
 package-lock.json
