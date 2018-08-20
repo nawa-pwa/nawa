@@ -2,7 +2,7 @@
 /// <reference path="../index.d.ts" />
 
 import Route from './route';
-import {debug} from '../../Lib';
+import {debug,urls} from '../../Lib';
 import syncMiddleware from '../../lib/middleware/syncController';
 import asyncMiddleware from '../../lib/middleware/asyncController';
 
@@ -20,11 +20,6 @@ export default class Router {
     private routes = new Map();
 
     constructor() {
-
-        this
-            .routes
-            .set(RegExp, new Map());
-
         self.addEventListener('fetch', this.fetchListener);
 
     }
@@ -81,24 +76,16 @@ export default class Router {
     }
     /**
    * bind requesting method, like get post
-   * @param {String} method get | post
+   * @param {String} method get | post | put | delete | any
    * @param {String} path
    * @param {Event} handler
    * @param {Object} options
    */
-    private add(method, routePath:RegExp, handler) {
-        options = options || {
-            origin: self.location.origin
-        };
+    private add(method:MethodDes, routePath:RegExp, handler) {
+        
 
         // the origin should be string or regexp
-        let origin = options.origin;
-        if (origin instanceof RegExp) {
-            origin = origin.source;
-        } else {
-            origin = this.regexEscape(origin);
-        }
-
+        
         method = method.toLowerCase();
 
         // init Route, treat this as a key
@@ -131,8 +118,13 @@ export default class Router {
 
     }
 
-    public add(method,routePath:RegExp, handler:RequestHandler){
-        
+    public add(method:MethodDes,hrefReg:RegExp, handler:RequestHandler,options:object){
+        let route = new Route(method,handler,options);
+        !this.routes.has(method) && this.routes.set(hrefReg,new Map());
+
+        let routeMap = this.routes.get(method);
+
+        routeMap.set(hrefReg,route);
     }
 
     public syncUse(middleware : syncMiddleware) {
