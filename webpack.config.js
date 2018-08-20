@@ -15,7 +15,7 @@ let htmlDirs = produceHtmls(TestDir);
 let entries = produceEntries(htmlDirs),
     htmlPluginProp = produceHtmlPlugins(htmlDirs).map(pluginProp=>{
         return new HtmlWebpackPlugin(
-            pluginProp
+        
         )
     })
 
