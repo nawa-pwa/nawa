@@ -8,9 +8,7 @@ declare interface globalOptions {
 }
 
 declare interface routerOptions {
-    path: string | RegExp;
-    origin: string | RegExp;
-    maxAge:number; // unit is second
+    maxAge?:number; // unit is second
     query?: {
         ignoreSearch: boolean
     }
@@ -47,10 +45,10 @@ interface asyncMiddleware{
     (ctx:middlewareObj): Promise<any>;
 }
 
-type RequestHandler = (ctx)=> Promise<Response>;
+type RequestHandler = (request:Request)=> Promise<Response>;
 
 type MethodDes = "get" | "post" | "any" | "put" | "delete";
 
 interface routeMap{
-    
+
 }

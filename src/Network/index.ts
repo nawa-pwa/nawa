@@ -8,18 +8,21 @@ export default class Network extends Router {
     constructor() {
         super()
     }
-    public cacheFirst(param : routerOptions) {
-        let {path, origin, query,maxAge} = param;
-        super.get({path, handler: store.cache.cacheFirst.bind(store.cache), origin, query,maxAge});
+    public cacheFirst(urlToMatch:RegExp,options?:routerOptions) {
+        
+        super.get(urlToMatch,(request)=>{
+            return store.cache.cacheFirst(request,options)
+        });
     }
-    public networkFirst(param : routerOptions) {
-        let {path, origin, query,maxAge} = param;
-        super.get({path, handler: store.cache.networkFirst.bind(store.cache), origin, query,maxAge});
+    public networkFirst(urlToMatch:RegExp,options?:routerOptions) {
+        super.get(urlToMatch,(request)=>{
+            return store.cache.networkFirst(request,options)
+        });
     }
-   
-    public cacheUpdate(param : routerOptions) {
-        let {path, origin, query,maxAge} = param;
-        super.get({path, handler: store.cache.cacheUpdate.bind(store.cache), origin, query,maxAge});
+    public cacheUpdate(urlToMatch:RegExp,options?:routerOptions) {
+        super.get(urlToMatch,(request)=>{
+            return store.cache.networkFirst(request,options)
+        });
     }
 
 }
