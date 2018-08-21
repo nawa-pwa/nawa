@@ -54,7 +54,19 @@ export default class Router {
     }
 
     public get(routePath: RegExp, handler: RequestHandler){
+<<<<<<< HEAD
         this.add('get',routePath,handler);
+=======
+
+    }
+    public post(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("post", path, handler, param);
+    }
+    public put(param : routerOriginOpt) {
+        let {path, handler} = param;
+        return this.add("put", path, handler, param);
+>>>>>>> 9a4d23f2265bfa59334774a944af14a68626398c
     }
     public post(routePath: RegExp, handler: RequestHandler){
         this.add('post',routePath,handler);
@@ -62,8 +74,51 @@ export default class Router {
     public put(routePath: RegExp, handler: RequestHandler){
         this.add('put',routePath,handler);
     }
+<<<<<<< HEAD
     public delete(routePath: RegExp, handler: RequestHandler){
         this.add('delete',routePath,handler);
+=======
+    /**
+   * bind requesting method, like get post
+   * @param {String} method get | post | put | delete | any
+   * @param {String} path
+   * @param {Event} handler
+   * @param {Object} options
+   */
+    private add(method:MethodDes, routePath:RegExp, handler) {
+        
+        // the origin should be string or regexp
+        method = method.toLowerCase();
+
+        // init Route, treat this as a key
+        let route = new Route(method, path, handler, options);
+
+        if (!this.routes.has(origin)) {
+            // add origin
+            this
+                .routes
+                .set(origin, new Map());
+        }
+
+        // get the route of this origin
+        let methodMap = this
+            .routes
+            .get(origin);
+
+        if (!methodMap.has(method)) {
+            methodMap.set(method, new Map());
+        }
+
+        let routeMap = methodMap.get(method);
+        let regExp = route.path;
+
+        if (routeMap.has(regExp.source)) {
+            debug('"' + path + '" resolves to same regex as existing route.');
+        }
+
+        routeMap.set(regExp.source, route);
+
+>>>>>>> 9a4d23f2265bfa59334774a944af14a68626398c
     }
     public any(routePath: RegExp, handler: RequestHandler){
         this.add('any',routePath,handler);
@@ -71,6 +126,7 @@ export default class Router {
 
     public add(method:MethodDes,hrefReg:RegExp, handler:RequestHandler,options?:object){
         let route = new Route(method,handler,options);
+
         !this.routes.has(method) && this.routes.set(hrefReg,new Map());
 
         let routeMap = this.routes.get(method);
