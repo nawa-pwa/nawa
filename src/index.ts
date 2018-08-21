@@ -30,7 +30,6 @@ export default class Nawa extends Network{
         super.revoke();
     }
 
-    
     constructor(param:NawaOptions){
         super();
         

@@ -56,7 +56,6 @@ export default class Router {
 
     public get(routePath: RegExp, handler: RequestHandler){
 
-        
     }
     public post(param : routerOriginOpt) {
         let {path, handler} = param;
@@ -120,7 +119,7 @@ export default class Router {
 
     public add(method:MethodDes,hrefReg:RegExp, handler:RequestHandler,options:object){
         let route = new Route(method,handler,options);
-        
+
         !this.routes.has(method) && this.routes.set(hrefReg,new Map());
 
         let routeMap = this.routes.get(method);
