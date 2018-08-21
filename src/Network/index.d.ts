@@ -48,4 +48,13 @@ interface asyncMiddleware{
 }
 
 type RequestHandler = (ctx)=> Promise<Response>;
-type methodString = "get" | "post" | "put" | "any" | "delete"
+
+type MethodDes = "get" | "post" | "any" | "put" | "delete";
+
+interface RouteMap{
+    
+}
+
+declare class Route{
+    public makeHandler:(url)=>Function;
+}

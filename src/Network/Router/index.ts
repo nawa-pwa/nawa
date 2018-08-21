@@ -20,11 +20,6 @@ export default class Router {
     private routes = new Map();
 
     constructor() {
-
-        this
-            .routes
-            .set(RegExp, new Map());
-
         self.addEventListener('fetch', this.fetchListener);
 
     }
@@ -58,81 +53,28 @@ export default class Router {
         this.routes = null;
     }
 
-
     public get(routePath: RegExp, handler: RequestHandler){
-
-        
+        this.add('get',routePath,handler);
     }
-    public post(param : routerOriginOpt) {
-        let {path, handler} = param;
-        return this.add("post", path, handler, param);
+    public post(routePath: RegExp, handler: RequestHandler){
+        this.add('post',routePath,handler);
     }
-    public put(param : routerOriginOpt) {
-        let {path, handler} = param;
-        return this.add("put", path, handler, param);
+    public put(routePath: RegExp, handler: RequestHandler){
+        this.add('put',routePath,handler);
     }
-    public delete(param : routerOriginOpt) {
-        let {path, handler} = param;
-        return this.add("delete", path, handler, param);
+    public delete(routePath: RegExp, handler: RequestHandler){
+        this.add('delete',routePath,handler);
     }
-    public any(param : routerOriginOpt) {
-        let {path, handler} = param;
-        return this.add("any", path, handler, param);
-    }
-    /**
-   * bind requesting method, like get post
-   * @param {String} method get | post
-   * @param {String} path
-   * @param {Event} handler
-   * @param {Object} options
-   */
-    private add(method: methodString, routePath:RegExp, handler) {
-        options = options || {
-            origin: self.location.origin
-        };
+    public any(routePath: RegExp, handler: RequestHandler){
+        this.add('any',routePath,handler);
+    }   
 
-        // the origin should be string or regexp
-        let origin = options.origin;
-        if (origin instanceof RegExp) {
-            origin = origin.source;
-        } else {
-            origin = this.regexEscape(origin);
-        }
+    public add(method:MethodDes,hrefReg:RegExp, handler:RequestHandler,options?:object){
+        let route = new Route(method,handler,options);
+        !this.routes.has(method) && this.routes.set(hrefReg,new Map());
 
-        method = method.toLowerCase();
-
-        // init Route, treat this as a key
-        let route = new Route(method, path, handler, options);
-
-        if (!this.routes.has(origin)) {
-            // add origin
-            this
-                .routes
-                .set(origin, new Map());
-        }
-
-        // get the route of this origin
-        let methodMap = this
-            .routes
-            .get(origin);
-
-        if (!methodMap.has(method)) {
-            methodMap.set(method, new Map());
-        }
-
-        let routeMap = methodMap.get(method);
-        let regExp = route.path;
-
-        if (routeMap.has(regExp.source)) {
-            debug('"' + path + '" resolves to same regex as existing route.');
-        }
-
-        routeMap.set(regExp.source, route);
-
-    }
-
-    public add(method,routePath:RegExp, handler:RequestHandler){
-        
+        let routeMap = this.routes.get(method);
+        routeMap.set(hrefReg,route);
     }
 
     public syncUse(middleware : syncMiddleware) {
@@ -146,67 +88,44 @@ export default class Router {
    * Entry
    * get the handle of specific route, like cacheFirst
    * @param {Request} request fetch_request
+   * @return null
    */
     private match(request) : Function | null {
-        return this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
+        let route = this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
+
+        route && (route = route.makeHandler());
+
+        return route
     }
-    /**
-   *
-   * @param {String} method get|post|...
-   * @param {Map} methodMaps matched method with route Obj
-   * @param {String} pathname pathname of url, like app/test
-   */
-    private extractMethod(method, methodMaps, pathname) {
-        if (methodMaps.length === 0) {
-            // the origin is not allowed
-            return null;
-        }
+   
+    private matchMethod(method, url) {
+        let methodMap = this.routes.get(method);
 
-        for (let i = 0; i < methodMaps.length; i++) {
-            let methodMap = methodMaps[i]; // get all method's Route specific to this origin
+        if(!methodMap) return null;
+        
+        return this.matchRoute(methodMap,url);
+    }
+    private matchRoute(routesMap,url){
+        let routesIterator = routesMap.entries();
+        let item = routesIterator.next();
 
-            let routeMap = methodMap && methodMap.get(method.toLowerCase());
+        while(!item.done){
+            let pattern = item.value[0];
 
-            if (routeMap) {
-                let routes = this.keyMatch(routeMap, pathname); // match the pathname using param.path
-
-                if (routes.length > 0) {
-                    // only get the first handle
-                    return routes[0].makeHandler(pathname);
-                }
+            if(pattern.test(url)){
+                return item.value[1]
             }
+            item = routesIterator.next();
         }
 
         return null;
     }
-    private matchMethod(method, url) {
-        let urlObject = new URL(url);
-        let origin = urlObject.origin;
-        let path = urlObject.pathname;
-
-        return this.extractMethod(method, this.keyMatch(this.routes, origin), path);
-    }
-    private keyMatch(map, string) {
-        // This would be better written as a for..of loop, but that would break the
-        // minifyify process in the build.
-        let entriesIterator = map.entries();
-        let item = entriesIterator.next();
-        let matches = [];
-
-        while (!item.done) {
-            let pattern = new RegExp(item.value[0]);
-
-            if (pattern.test(string)) {
-                // item.value(1) is map type. {method, Contructor Route}, like: {get:
-                // Route{regexp,method}}
-                matches.push(item.value[1]);
-            }
-            item = entriesIterator.next();
-        }
-        return matches;
-    }
-
-    private regexEscape(s) {
+    
+    /**
+     * @param s String
+     * @description transfer the regexp's string, in order to be used for new Regexp()
+     */
+    private regexEscape(s:string) {
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
