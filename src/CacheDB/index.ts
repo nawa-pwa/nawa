@@ -25,7 +25,9 @@ export default class CacheDB {
 
         let {query,maxEntry,name} = param;
         this.DBName = name || "NAWA-DB";
+
         Object.assign(this.query,query);
+        
         this.lfu = new LFU(maxEntry,this.query.ignoreSearch,this.DBName);
 
     }
