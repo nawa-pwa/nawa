@@ -53,7 +53,6 @@ export default class Router {
         this.routes = null;
     }
 
-
     public get(routePath: RegExp, handler: RequestHandler){
 
     }
@@ -82,9 +81,7 @@ export default class Router {
    */
     private add(method:MethodDes, routePath:RegExp, handler) {
         
-
         // the origin should be string or regexp
-        
         method = method.toLowerCase();
 
         // init Route, treat this as a key

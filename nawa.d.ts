@@ -10,15 +10,22 @@ declare namespace nawa{
         filename?:string;
         skipWaiting?:boolean;
     }
+    interface routerOptions {
+        maxAge?:number; // unit is second
+        query?: {
+            ignoreSearch: boolean
+        }
+    }
+    type RequestHandler = (request:Request)=> Promise<Response>;
     
-    interface Nawa{      
-        cacheFirst(param : routerOptions) : void;
-        networkFirst(param : routerOptions) : void;
-        cacheUpdate(param : routerOptions) : void;
-        get(param : routerOriginOpt) : void;
-        post(param : routerOriginOpt) : void;
-        put(param : routerOriginOpt) : void;
-        delete(param : routerOriginOpt) : void;
+    interface Nawa{     
+        cacheFirst(urlToMatch:RegExp,options?:routerOptions) : void;
+        networkFirst(urlToMatch:RegExp,options?:routerOptions) : void;
+        cacheUpdate(urlToMatch:RegExp,options?:routerOptions) : void;
+        get(routePath: RegExp, handler: RequestHandler) : void;
+        post(routePath: RegExp, handler: RequestHandler) : void;
+        put(routePath: RegExp, handler: RequestHandler) : void;
+        delete(routePath: RegExp, handler: RequestHandler) : void;
     
         revoke():void; // when meet error, remove all listeners
         use(middleware : asyncMiddleware) : void;
