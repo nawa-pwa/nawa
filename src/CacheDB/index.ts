@@ -14,7 +14,7 @@ interface globalOptions {
 
 export default class CacheDB {
     private sucReg = /^0|([123]\d\d)|(40[14567])|410$/;
-    private lfu;
+    private lfu:any;
     private DBName ="NAWA-DB"
     private timeout = 3; // 3s for networkFirst stragety
     private query?:CacheQueryOptions={

@@ -60,10 +60,10 @@ declare class CacheDB {
     private lfu : LFU;
     private isUpated(res:Response,maxAge:number):boolean;
     public precacheUrl(url):Promise<void> 
-    public fetchAndCache(request:Request):Promise<Response> 
-    public cacheFirst(request:Request):Promise<Response>
-    public networkFirst(request:Request):Promise<Response | {}>
-    public cacheUpdate(request:Request):Promise<Response>
+    public fetchAndCache(request:Request,options?:routerOptions):Promise<Response> 
+    public cacheFirst(request:Request,options?:routerOptions):Promise<Response>
+    public networkFirst(request:Request,options?:routerOptions):Promise<Response>
+    public cacheUpdate(request:Request,options?:routerOptions):Promise<Response>
 }
 
 

@@ -3,7 +3,8 @@ const {
     produceEntries,
     produceHtmlPlugins
 } = require('./globTest'),
-    {produceHtmls} = require('../webpack/utils'),
+    routeText = require('./route'),
+    {produceHtmls} = require('../../webpack/utils'),
     path = require('path');
 
 class Test{
@@ -17,11 +18,11 @@ class Test{
 
         let htmlPlugins = produceHtmlPlugins(dirArr);
 
-
     }
     run(){
         globGrapHtmlDir(this.fileDir);
         this.produceEntries();
+        routeText();
     }
     
 }

@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "allowJs": true,
+      "checkJs": true,
+      "outDir": "./dist",
+      "sourceMap": true,
+      "strict": true,
+      "types":["node"],
+      "noImplicitAny": false,
+      "strictNullChecks": true
+    },
+    "include": [
+      "index.ts",
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }

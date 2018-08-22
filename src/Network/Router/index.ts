@@ -6,6 +6,17 @@ import {debug} from '../../Lib';
 import syncMiddleware from '../../lib/middleware/syncController';
 import asyncMiddleware from '../../lib/middleware/asyncController';
 
+
+type RequestHandler = (request:Request)=> Promise<Response>;
+type MethodDes = "get" | "post" | "any" | "put" | "delete";
+
+interface syncMiddleware{
+    (ctx:middlewareObj,next:Function): void;
+}
+
+interface asyncMiddleware{
+    (ctx:middlewareObj): Promise<any>;
+}
 /**
  * the routes is a map:
  *    @key: key is origin
@@ -18,12 +29,14 @@ import asyncMiddleware from '../../lib/middleware/asyncController';
  */
 export default class Router {
     private routes = new Map();
-
+    private pureHost = true; // process the links, output origin + pathname
+                            // like https://now.qq.com/cgi-bin/now/web/room/get_mem_list?_=0.8114218623102283&bkn=1557657975&num=20&room_id=1256442018&start=0
+                            // outpu: https://now.qq.com/cgi-bin/now/web/room/get_mem_list
     constructor() {
         self.addEventListener('fetch', this.fetchListener);
 
     }
-    private fetchListener = (event) => {
+    private fetchListener = (event:any) => {
         // extract the listener event
         let store = {
             req: event.requset,
@@ -72,10 +85,11 @@ export default class Router {
     public add(method:MethodDes,hrefReg:RegExp, handler:RequestHandler,options?:object){
         let route = new Route(method,handler,options);
 
-        !this.routes.has(method) && this.routes.set(hrefReg,new Map());
-
+        !this.routes.has(method) && this.routes.set(method,new Map());
         let routeMap = this.routes.get(method);
         routeMap.set(hrefReg,route);
+
+        debug("the lastest route is ", routeMap);
     }
 
     public syncUse(middleware : syncMiddleware) {
@@ -91,15 +105,23 @@ export default class Router {
    * @param {Request} request fetch_request
    * @return null
    */
-    private match(request) : Function | null {
-        let route = this.matchMethod(request.method, request.url) || this.matchMethod('any', request.url);
+    public match(request:Request) : Function | null {
+        let url = request.url;
 
+        if(this.pureHost){
+            let matchUrl = new URL(url);
+            url = matchUrl.origin + matchUrl.pathname;
+        }
+
+        let route = this.matchMethod(request.method,url) || this.matchMethod('any',url);
         route && (route = route.makeHandler());
 
-        return route
+
+        return route;
     }
    
     private matchMethod(method, url) {
+        method = method.toLowerCase();
         let methodMap = this.routes.get(method);
 
         if(!methodMap) return null;

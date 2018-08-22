@@ -27,9 +27,16 @@ class defaultMiddleware {
     public bypassNetwork(ctx : middlewareObj, next : Function) {
         let {request} = ctx;
         let {referrer} = request,
-            query = new URL(referrer).searchParams;
-
-        if (query.get('_pwa') != '0') {
+            query = referrer &&  new URL(referrer).searchParams;
+            // the referer is null when navigate to html resources
+        
+        if(this.isHTML(request.url,request.mode)){
+            // when the user click the link from other place, the referer is empty at first.
+            // then we could check the request url whether it contains _pwa = 0 query
+            query = new URL(request.url).searchParams;
+            query.get('_pwa') != '0' && next();
+        } else if (query.get('_pwa') != '0') { 
+            // we could depend on the referrer for other files, except for html,
             // when the url's query contain _pwa=0, then skip sw
             next();
         }

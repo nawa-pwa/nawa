@@ -54,4 +54,3 @@ module.exports.produceHtmlPlugins = function(dirArr){
         return dir.html;
     })
 }
-

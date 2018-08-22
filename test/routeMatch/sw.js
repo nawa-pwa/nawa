@@ -1,5 +1,4 @@
 import Nawa from '../../src';
-import LFU from '../../src/CacheDB/LFU';
 
 
 
@@ -12,12 +11,7 @@ let app = new Nawa({
     }
 });
 
-app.cacheUpdate({
-    path:/now\/lib\/smiley_.*\.png/,
-    origin:"11.url.cn"
-});
-
-app.cacheFirst({
-    path:/now\/lib\/.*\.js/,
-    origin:"11.url.cn"
-});
+// always ignore query
+app.cacheFirst(/11.url.cn\/now\/lib\/.*.png/,{
+    maxAge: 60*60*24*2, // 2days
+})

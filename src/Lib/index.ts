@@ -12,13 +12,13 @@ interface WorkerLocation {
   search : String;
 }
 
-export function debug(message) {
-  var flag = store.debug
 
-  if (flag) {
-    console.log('[nawa] ' + message);
-  }
-}
+export const debug = (()=>{
+    if(store.debug) return ()=>{};
+    else{
+      return console.log.bind(console,'[nawa] ')
+    }
+})()
 
 export const urls:WorkerLocation = (():WorkerLocation=>{
   let location: WorkerLocation = self.location;
