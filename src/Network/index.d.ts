@@ -45,7 +45,7 @@ interface asyncMiddleware{
     (ctx:middlewareObj): Promise<any>;
 }
 
-type RequestHandler = (request:Request)=> Promise<Response>;
+type RequestHandler = (request:Request,options:object)=> Promise<Response>;
 
 type MethodDes = "get" | "post" | "any" | "put" | "delete";
 

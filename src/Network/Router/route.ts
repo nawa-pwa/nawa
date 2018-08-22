@@ -1,10 +1,18 @@
-export default class Route {
+/// <reference path="../index.d.ts" />
 
-    constructor(public method:MethodDes,public handler:RequestHandler,public options={}) {}
+export default class Route {
+    private method:MethodDes;
+    private handler:RequestHandler;
+    private options
+    constructor( method:MethodDes, handler:RequestHandler,options={}) {
+      this.method = method;
+      this.handler = handler;
+      this.options = options;
+    }
     public makeHandler() {
-      return function (request) {
+      return  (request)=>{
         return this.handler(request, this.options);
-      }.bind(this);
+      };
     }
   }
 

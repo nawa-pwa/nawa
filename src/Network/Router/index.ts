@@ -1,5 +1,4 @@
 'use strict';
-/// <reference path="../index.d.ts" />
 
 import Route from './route';
 import {debug} from '../../Lib';

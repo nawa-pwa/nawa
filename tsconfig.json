@@ -11,12 +11,7 @@
         "typeRoots" : ["./typings"],
         "experimentalDecorators":true,
     },
-    "exclude": [
-        "node_modules"
-    ],
-    "files": [
-        "./typings/service-worker.d.ts",
-        "./typings/es6-promise.d.ts",
-        "./typings/index.d.ts"
+    "include": [
+        "src/**/*"
     ]
 }
